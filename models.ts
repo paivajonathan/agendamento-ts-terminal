@@ -1,12 +1,12 @@
 class User {
+  private _id: number;
   private _email: string;
   private _password: string;
-  private _role: string;
 
-  constructor(email: string, password: string, role: string) {
+  constructor(id: number, email: string, password: string) {
+    this._id = id;
     this._email = email;
     this._password = password;
-    this._role = role;
   }
 
   public get email(): string {
@@ -17,20 +17,17 @@ class User {
     return this._password;
   }
 
-  public get role(): string {
-    return this._role;
+  public get id(): number {
+    return this._id;
   }
 
-  public asObject(): object {
-    return {
-      email: this.email,
-      password: this.password,
-      role: this.role,
-    }
+  public set id(id: number) {
+    this._id = id;
   }
 }
 
 class Person {
+  private _id: number;
   private _name: string;
   private _birthDate: Date;
   private _gender: string;
@@ -38,14 +35,16 @@ class Person {
   private _userId: number;
 
   constructor(
+    id: number,
     name: string,
-    birthDate: Date,
+    birthDate: string,
     gender: string,
     cellphone: string,
     userId: number,
   ) {
+    this._id = id;
     this._name = name;
-    this._birthDate = birthDate;
+    this._birthDate = new Date(birthDate);
     this._gender = gender;
     this._cellphone = cellphone;
     this._userId = userId;
@@ -65,6 +64,10 @@ class Person {
 
   public get cellphone(): string {
     return this._cellphone;
+  }
+
+  public get userId(): number {
+    return this._userId;
   }
 
   public set birthDate(birthDate: Date) {
@@ -89,20 +92,34 @@ class Person {
   }
 }
 
+class Administrator extends Person {
+  constructor(
+    id: number,
+    name: string,
+    birthDate: string,
+    gender: string,
+    cellphone: string,
+    userId: number,
+  ) {
+    super(id, name, birthDate, gender, cellphone, userId);
+  }
+}
+
 class Patient extends Person {
   private _healthInsurance: string;
   private _address: string;
 
   constructor(
+    id: number,
     name: string,
-    birthDate: Date,
+    birthDate: string,
     gender: string,
     cellphone: string,
     healthInsurance: string,
     address: string,
     userId: number,
   ) {
-    super(name, birthDate, gender, cellphone, userId);
+    super(id, name, birthDate, gender, cellphone, userId);
     this._healthInsurance = healthInsurance;
     this._address = address;
   }
@@ -191,15 +208,16 @@ class Doctor extends Person {
   private _specialty: Specialty;
 
   constructor(
+    id: number,
     name: string,
-    birthDate: Date,
+    birthDate: string,
     gender: string,
     cellphone: string,
     licenceNumber: string,
     specialty: Specialty,
     userId: number,
   ) {
-    super(name, birthDate, gender, cellphone, userId);
+    super(id, name, birthDate, gender, cellphone, userId);
     this._licenceNumber = licenceNumber;
     this._specialty = specialty;
   }
@@ -221,4 +239,4 @@ class Appointment {
   }
 }
 
-export { Appointment, Doctor, History, Patient, User };
+export { Appointment, Doctor, History, Patient, User, Specialty, Administrator };
