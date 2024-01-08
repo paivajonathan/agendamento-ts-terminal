@@ -1,4 +1,4 @@
-import { Appointment, Doctor, History, Patient, Specialty, User, Administrator } from "./models";
+import { Appointment, Doctor, History, Patient, Specialty, User, Administrator, Cardiology, Dermatology } from "./models";
 
 class Database {
   private _users: User[];
@@ -13,18 +13,24 @@ class Database {
   private constructor() {
     this._users = [
       new User(1, "teste@gmail.com", "123456"),
+      new User(2, "medico@gmail.com", "medico"),
       new User(2, "admin@gmail.com", "admin"),
     ];
     this._patients = [
       new Patient(1, "João", "01/01/2000", "Masculino", "999999999", "Unimed", "Rua 1", 1),
     ];
-    this._doctors = [];
+    this._doctors = [
+      new Doctor(1, "Médico", "01/01/2000", "Masculino", "999999999", "123456", 1, 2),
+    ];
     this._administrators = [
-      new Administrator(1, "Admin", "01/01/2000", "Masculino", "999999999", "Administração", 2),
+      new Administrator(1, "Admin", "01/01/2000", "Masculino", "999999999", "Administração", 3),
     ];
     this._appointments = [];
     this._histories = [];
-    this._specialties = [];
+    this._specialties = [
+      new Dermatology(),
+      new Cardiology(),
+    ];
   }
 
   public static getInstance(): Database {

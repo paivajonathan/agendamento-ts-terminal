@@ -199,9 +199,9 @@ abstract class Specialty {
   }
 }
 
-class Cardiology extends Specialty {
-  constructor() {
-    super("Cardiology");
+class SurgicalSpecialty extends Specialty {
+  constructor(name: string) {
+    super(name);
   }
 }
 
@@ -213,7 +213,7 @@ class Dermatology extends Specialty {
 
 class Doctor extends Person {
   private _licenceNumber: string;
-  private _specialty: Specialty;
+  private _specialtyId: number;
 
   constructor(
     id: number,
@@ -222,12 +222,12 @@ class Doctor extends Person {
     gender: string,
     cellphone: string,
     licenceNumber: string,
-    specialty: Specialty,
+    specialtyId: number,
     userId: number,
   ) {
     super(id, name, birthDate, gender, cellphone, userId);
     this._licenceNumber = licenceNumber;
-    this._specialty = specialty;
+    this._specialtyId = specialtyId;
   }
 }
 
@@ -279,4 +279,4 @@ class Appointment {
   }
 }
 
-export { Appointment, Doctor, History, Patient, User, Specialty, Administrator };
+export { Appointment, Doctor, History, Patient, User, Specialty, Administrator, Cardiology, Dermatology };
