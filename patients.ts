@@ -57,6 +57,10 @@ function makeAppointment(patientId: number): void {
     } catch (error) {
       console.log("Erro ao marcar consulta!");
       console.log(error.message);
+      const answer = readLine.question("Deseja tentar novamente? (s/n) ");
+      if (answer.toLowerCase() !== "s") {
+        break;
+      }
       waitUser();
     }
   } while (true);
