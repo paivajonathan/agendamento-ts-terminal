@@ -97,15 +97,19 @@ class Person {
 }
 
 class Administrator extends Person {
+  private _role: string;
+
   constructor(
     id: number,
     name: string,
     birthDate: string,
     gender: string,
     cellphone: string,
+    role: string,
     userId: number,
   ) {
     super(id, name, birthDate, gender, cellphone, userId);
+    this._role = role;
   }
 }
 
@@ -228,15 +232,18 @@ class Doctor extends Person {
 }
 
 class Appointment {
+  private _id: number;
   private _patientId: number = 0;
   private _doctorId: number = 0;
   private _date: Date = new Date();
 
   constructor(
+    id: number,
     patientId: number,
     doctorId: number,
     date: string
   ) {
+    this._id = id;
     this.patientId = patientId;
     this.doctorId = doctorId;
     this.date = date;

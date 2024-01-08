@@ -1,10 +1,10 @@
-import { Appointment, Patient } from "./models";
-import { waitUser } from "./utils";
 import readLine from "readline-sync";
-import db from "./database";
+import { AppointmentController, DoctorController, HistoryController } from "./controllers";
+import { Patient } from "./models";
+import { waitUser } from "./utils";
 
 function getDoctors(): void {
-  const doctors = db.doctors;
+  const doctors = DoctorController.getAll();
   if (!doctors.length) {
     console.log("Nenhum médico cadastrado!");
     waitUser();
@@ -16,9 +16,7 @@ function getDoctors(): void {
 }
 
 function getAppointments(patientId: number): void {
-  const appointments = db.appointments.filter(
-    (appointment: Appointment) => appointment.patientId === patientId
-  );
+  const appointments = AppointmentController.getByPatientId(patientId);
   if (!appointments.length) {
     console.log("Nenhuma consulta cadastrada!");
     waitUser();
@@ -30,9 +28,7 @@ function getAppointments(patientId: number): void {
 }
 
 function getHistory(patientId: number): void {
-  const history = db.histories.filter(
-    (history) => history.patientId === patientId
-  );
+  const history = HistoryController.getByPatientId(patientId);
   if (!history.length) {
     console.log("Nenhum histórico cadastrado!");
     waitUser();
@@ -45,26 +41,21 @@ function getHistory(patientId: number): void {
 
 function makeAppointment(patientId: number): void {
   do {
-    try {
-      console.clear();
-      const doctorId = Number(readLine.question("ID do médico: "));
-      const date = readLine.question("Data da consulta: ");
-    
-      const appointment = new Appointment(patientId, doctorId, date);
-      db.appointments.push(appointment);
-    
-      console.log("Consulta marcada com sucesso!");
+    console.clear();
+    const doctorId = Number(readLine.question("ID do médico: "));
+    const date = readLine.question("Data da consulta: ");
+
+    const appointment: any = AppointmentController.create(patientId, doctorId, date);
+
+    if (appointment.status === 200) {
+      console.log(appointment.message);
       waitUser();
       break;
-    } catch (error: any) {
-      console.log("Erro ao marcar consulta!");
-      console.log(error.message);
-      const answer: string = readLine.question("Deseja tentar novamente? (s/n) ");
-      if (answer.toLowerCase() !== "s") {
-        break;
-      }
+    } else {
+      console.log(appointment.message);
       waitUser();
-      continue;
+      const answer: string = readLine.question("Deseja tentar novamente? (s/n) ");
+      if (answer.toLowerCase() !== "s") break;
     }
   } while (true);
 }

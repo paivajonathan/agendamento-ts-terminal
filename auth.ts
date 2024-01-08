@@ -1,6 +1,7 @@
 import { waitUser } from "./utils";
 import { showPatientsScreen } from "./patients";
-import { UserController, PatientController } from "./controllers";
+import { showAdministratorsScreen } from "./administrators";
+import { UserController, PatientController, AdministratorController } from "./controllers";
 
 import readLine from "readline-sync";
 
@@ -26,10 +27,10 @@ function login() {
   //   doctorsScreen(doctor);
   // }
 
-  // const admin = db.admins.find((admin: Administrator) => admin.userId === user.id);
-  // if (admin) {
-  //   adminsScreen(admin);
-  // }
+  const admin = AdministratorController.getByUserId(user.id);
+  if (admin) {
+    showAdministratorsScreen(admin);
+  }
 }
 
 function register(): void {
