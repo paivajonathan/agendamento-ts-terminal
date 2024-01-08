@@ -1,5 +1,3 @@
-import db from "./database";
-import { Administrator, Doctor, Patient, User } from "./models";
 import { waitUser } from "./utils";
 import { showPatientsScreen } from "./patients";
 import { UserController, PatientController } from "./controllers";
