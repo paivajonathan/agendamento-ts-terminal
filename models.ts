@@ -85,15 +85,6 @@ class Person {
   public set cellphone(cellphone: string) {
     this._cellphone = cellphone;
   }
-
-  public asObject(): object {
-    return {
-      name: this.name,
-      birthDate: this.birthDate,
-      gender: this.gender,
-      cellphone: this.cellphone,
-    }
-  }
 }
 
 class Administrator extends Person {
@@ -147,14 +138,6 @@ class Patient extends Person {
   public set address(address: string) {
     this._address = address;
   }
-
-  public asObject(): object {
-    return {
-      ...super.asObject(),
-      healthInsurance: this.healthInsurance,
-      address: this.address,
-    }
-  }
 }
 
 class History {
@@ -200,14 +183,20 @@ abstract class Specialty {
 }
 
 class SurgicalSpecialty extends Specialty {
-  constructor(name: string) {
+  private _surgeryType: string;
+
+  constructor(name: string, surgeryType: string) {
     super(name);
+    this._surgeryType = surgeryType;
   }
 }
 
-class Dermatology extends Specialty {
-  constructor() {
-    super("Dermatology");
+class ClinicalSpecialty extends Specialty {
+  private _clinicalArea: string;
+
+  constructor(name: string, clinicalArea: string) {
+    super(name);
+    this._clinicalArea = clinicalArea;
   }
 }
 
@@ -279,4 +268,46 @@ class Appointment {
   }
 }
 
-export { Appointment, Doctor, History, Patient, User, Specialty, Administrator, Cardiology, Dermatology };
+class VirtualAppointment extends Appointment {
+  private _platform: string;
+
+  constructor(
+    id: number,
+    platform: string,
+    date: string,
+    patientId: number,
+    doctorId: number,
+  ) {
+    super(id, patientId, doctorId, date);
+    this._platform = platform;
+  }
+}
+
+class PresentialAppointment extends Appointment {
+  private _room: string;
+
+  constructor(
+    id: number,
+    room: string,
+    date: string,
+    patientId: number,
+    doctorId: number,
+  ) {
+    super(id, patientId, doctorId, date);
+    this._room = room;
+  }
+}
+
+export {
+  User,
+  Patient,
+  Doctor,
+  Administrator,
+  Appointment,
+  VirtualAppointment,
+  PresentialAppointment,
+  History,
+  Specialty,
+  ClinicalSpecialty,
+  SurgicalSpecialty
+};

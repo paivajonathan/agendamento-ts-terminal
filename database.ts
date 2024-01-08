@@ -1,6 +1,8 @@
-import { Appointment, Doctor, History, Patient, Specialty, User, Administrator, Cardiology, Dermatology } from "./models";
+import { Appointment, Doctor, History, Patient, Specialty, User, Administrator } from "./models";
 
 class Database {
+  private static instance: Database;
+
   private _users: User[];
   private _patients: Patient[];
   private _doctors: Doctor[];
@@ -9,7 +11,6 @@ class Database {
   private _histories: History[];
   private _specialties: Specialty[];
 
-  private static instance: Database;
   private constructor() {
     this._users = [
       new User(1, "teste@gmail.com", "123456"),
