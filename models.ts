@@ -50,6 +50,10 @@ class Person {
     this._userId = userId;
   }
 
+  public get id(): number {
+    return this._id;
+  }
+
   public get name(): string {
     return this._name;
   }
@@ -150,12 +154,12 @@ class Patient extends Person {
 }
 
 class History {
-  private _patient: Patient;
+  private _patientId: number;
   private _allergies: string[];
   private _medicationsInUse: string[];
 
-  constructor(patient: Patient) {
-    this._patient = patient;
+  constructor(patientId: number) {
+    this._patientId = patientId;
     this._allergies = [];
     this._medicationsInUse = [];
   }
@@ -170,8 +174,8 @@ class History {
     this._medicationsInUse.push(medication);
   }
 
-  public get patient(): Patient {
-    return this._patient;
+  public get patientId(): number {
+    return this._patientId;
   }
 
   public get allergies(): string[] {
@@ -224,18 +228,30 @@ class Doctor extends Person {
 }
 
 class Appointment {
-  private _patient: Patient;
-  private _doctor: Doctor;
+  private _patientId: number;
+  private _doctorId: number;
   private _date: Date;
 
   constructor(
-    patient: Patient,
-    doctor: Doctor,
-    date: Date
+    patientId: number,
+    doctorId: number,
+    date: string
   ) {
-    this._patient = patient;
-    this._doctor = doctor;
-    this._date = date;
+    this._patientId = patientId;
+    this._doctorId = doctorId;
+    this._date = new Date(date);
+  }
+
+  public get patientId(): number {
+    return this._patientId;
+  }
+
+  public get doctorId(): number {
+    return this._doctorId;
+  }
+
+  public get date(): Date {
+    return this._date;
   }
 }
 
