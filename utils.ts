@@ -6,6 +6,7 @@ function waitUser(): void {
 }
 
 function showInitialMenu(): void {
+  console.clear();
   console.log("=========== Bem vindo(a) ao sistema ===========");
   console.log("Qual ação deseja realizar?");
   console.log("1 - Realizar login");

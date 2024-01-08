@@ -2,14 +2,15 @@ import db from "./database";
 import { Administrator, Doctor, Patient, User } from "./models";
 import { waitUser } from "./utils";
 import { showPatientsScreen } from "./patients";
+import { UserController, PatientController } from "./controllers";
 
 import readLine from "readline-sync";
 
 function login() {
-  const email = readLine.question("Digite seu email:");
-  const password = readLine.question("Digite sua senha:");
+  const email = readLine.question("Digite seu email: ");
+  const password = readLine.question("Digite sua senha: ");
 
-  const user: User | undefined = db.users.find((user: User) => user.email === email && user.password === password);
+  const user = UserController.authenticate(email, password);
 
   if (!user) {
     console.log("Email ou senha incorretos");
@@ -17,7 +18,7 @@ function login() {
     return;
   }
 
-  const patient = db.patients.find((patient: Patient) => patient.userId === user.id);
+  const patient = PatientController.getPatientByUserId(user.id);
   if (patient) {
     showPatientsScreen(patient);
   }
@@ -35,40 +36,29 @@ function login() {
 
 function register(): void {
   do {
-    const email = readLine.question("Digite seu email:");
-    const existentUser: User | undefined = db.users.find((user: User) => user.email === email);
+    console.clear();
+    const email = readLine.question("Digite seu email: ");
+    const existentUser = UserController.getByEmail(email);
 
     if (existentUser) {
       console.log("Email já cadastrado");
+      waitUser();
       return;
     }
 
-    try {
-      const password = readLine.question("Digite sua senha:");
-      const name = readLine.question("Digite seu nome:");
-      const birthDate = readLine.question("Digite sua data de nascimento:");
-      const gender = readLine.question("Digite seu gênero:");
-      const cellphone = readLine.question("Digite seu celular:");
-      const healthInsurance = readLine.question("Digite seu plano de saúde:");
-      const address = readLine.question("Digite seu endereço:");
+    const password = readLine.question("Digite sua senha: ");
+    const name = readLine.question("Digite seu nome: ");
+    const birthDate = readLine.question("Digite sua data de nascimento: ");
+    const gender = readLine.question("Digite seu gênero: ");
+    const cellphone = readLine.question("Digite seu celular: ");
+    const healthInsurance = readLine.question("Digite seu plano de saúde: ");
+    const address = readLine.question("Digite seu endereço: ");
 
-      const newUserId = db.users.length + 1;
-      const newUser = new User(newUserId, email, password);
-      
-      const newPatientId = db.patients.length + 1;
-      const patient = new Patient(newPatientId, name, birthDate, gender, cellphone, healthInsurance, address, newUser.id);
-      
-      db.users.push(newUser);
-      db.patients.push(patient);
-      console.log("Usuário cadastrado com sucesso");
-      break;
-    } catch (error: any) {
-      console.log("Ocorreu um erro: " + error.message);
-      waitUser();
-      continue;
-    }
-  }
-  while (true);
+    const registered: any = PatientController.register(email, password, name, birthDate, gender, cellphone, healthInsurance, address);
+    console.log(registered.message);
+    waitUser();
+    if (registered.status === 200) break;
+  } while (true);
 }
 
 export { login, register };

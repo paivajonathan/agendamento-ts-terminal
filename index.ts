@@ -1,14 +1,14 @@
 import readLine from "readline-sync";
 import { login, register } from "./auth";
-import { showInitialMenu } from "./utils";
+import { showInitialMenu, waitUser } from "./utils";
 
 function showMainScreen(): void {
-  const answer: number = 0;
+  let answer: number = 0;
 
   do {
     showInitialMenu();
 
-    const answer: number = parseInt(readLine.question("Digite o número da ação:"));
+    answer = parseInt(readLine.question("Digite o número da ação: "));
 
     switch (answer) {
       case 1:
@@ -19,6 +19,7 @@ function showMainScreen(): void {
         break;
       case 3:
         console.log("Saindo...");
+        waitUser();
         break;
       default:
         console.log("Opção inválida");
