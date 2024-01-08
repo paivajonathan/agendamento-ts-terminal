@@ -175,18 +175,20 @@ class History {
 }
 
 abstract class Specialty {
-  name: string;
+  private _id: number;
+  private _name: string;
 
-  constructor(name: string) {
-    this.name = name;
+  constructor(id: number, name: string) {
+    this._id = id;
+    this._name = name;
   }
 }
 
 class SurgicalSpecialty extends Specialty {
   private _surgeryType: string;
 
-  constructor(name: string, surgeryType: string) {
-    super(name);
+  constructor(id: number, name: string, surgeryType: string) {
+    super(id, name);
     this._surgeryType = surgeryType;
   }
 }
@@ -194,8 +196,8 @@ class SurgicalSpecialty extends Specialty {
 class ClinicalSpecialty extends Specialty {
   private _clinicalArea: string;
 
-  constructor(name: string, clinicalArea: string) {
-    super(name);
+  constructor(id: number, name: string, clinicalArea: string) {
+    super(id, name);
     this._clinicalArea = clinicalArea;
   }
 }

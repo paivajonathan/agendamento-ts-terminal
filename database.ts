@@ -1,4 +1,16 @@
-import { Appointment, Doctor, History, Patient, Specialty, User, Administrator } from "./models";
+import {
+  User,
+  Patient,
+  History,
+  Doctor,
+  Specialty,
+  Administrator,
+  Appointment,
+  VirtualAppointment,
+  PresentialAppointment,
+  ClinicalSpecialty,
+  SurgicalSpecialty,
+} from "./models";
 
 class Database {
   private static instance: Database;
@@ -26,11 +38,14 @@ class Database {
     this._administrators = [
       new Administrator(1, "Admin", "01/01/2000", "Masculino", "999999999", "Administração", 3),
     ];
-    this._appointments = [];
+    this._appointments = [
+      new VirtualAppointment(1, "Zoom", "01/01/2000", 1, 1),
+      new PresentialAppointment(2, "Sala 1", "01/01/2000", 1, 1),
+    ];
     this._histories = [];
     this._specialties = [
-      new Dermatology(),
-      new Cardiology(),
+      new ClinicalSpecialty(1, "Cardiologia", "Cardiologista"),
+      new SurgicalSpecialty(2, "Cirurgia Geral", "Cirurgião Geral"),
     ];
   }
 
