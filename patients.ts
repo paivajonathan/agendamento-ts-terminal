@@ -46,7 +46,8 @@ function getHistory(patientId: number): void {
 function makeAppointment(patientId: number): void {
   do {
     try {
-      const doctorId = parseInt(readLine.question("ID do médico: "));
+      console.clear();
+      const doctorId = Number(readLine.question("ID do médico: "));
       const date = readLine.question("Data da consulta: ");
     
       const appointment = new Appointment(patientId, doctorId, date);
@@ -54,14 +55,16 @@ function makeAppointment(patientId: number): void {
     
       console.log("Consulta marcada com sucesso!");
       waitUser();
-    } catch (error) {
+      break;
+    } catch (error: any) {
       console.log("Erro ao marcar consulta!");
       console.log(error.message);
-      const answer = readLine.question("Deseja tentar novamente? (s/n) ");
+      const answer: string = readLine.question("Deseja tentar novamente? (s/n) ");
       if (answer.toLowerCase() !== "s") {
         break;
       }
       waitUser();
+      continue;
     }
   } while (true);
 }

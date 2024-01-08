@@ -228,18 +228,18 @@ class Doctor extends Person {
 }
 
 class Appointment {
-  private _patientId: number;
-  private _doctorId: number;
-  private _date: Date;
+  private _patientId: number = 0;
+  private _doctorId: number = 0;
+  private _date: Date = new Date();
 
   constructor(
     patientId: number,
     doctorId: number,
     date: string
   ) {
-    this._patientId = patientId;
-    this._doctorId = doctorId;
-    this._date = new Date(date);
+    this.patientId = patientId;
+    this.doctorId = doctorId;
+    this.date = date;
   }
 
   public get patientId(): number {
@@ -252,6 +252,23 @@ class Appointment {
 
   public get date(): Date {
     return this._date;
+  }
+
+  public set patientId(patientId: number) {
+    if (isNaN(patientId)) throw new Error("ID do paciente inválido.");
+    this._patientId = patientId;
+  }
+
+  public set doctorId(doctorId: number) {
+    if (isNaN(doctorId)) throw new Error("ID do médico inválido.");
+    console.log(doctorId);
+    this._doctorId = doctorId;
+  }
+
+  public set date(date: string) {
+    const regex = /^\d{2}([./-])\d{2}\1\d{4}$/;
+    if (!regex.test(date)) throw new Error("Data inválida.");
+    this._date = new Date(date);
   }
 }
 
