@@ -42,18 +42,17 @@ function getHistory(patientId: number): void {
 function makeAppointment(patientId: number): void {
   do {
     console.clear();
+
     const doctorId = Number(readLine.question("ID do médico: "));
     const date = readLine.question("Data da consulta: ");
 
     const appointment: any = AppointmentController.create(patientId, doctorId, date);
 
-    if (appointment.status === 200) {
-      console.log(appointment.message);
-      waitUser();
-      break;
-    } else {
-      console.log(appointment.message);
-      waitUser();
+    console.log(appointment.message);
+    waitUser();
+
+    if (appointment.status === 200) break;
+    else {
       const answer: string = readLine.question("Deseja tentar novamente? (s/n) ");
       if (answer.toLowerCase() !== "s") break;
     }

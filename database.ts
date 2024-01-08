@@ -27,7 +27,7 @@ class Database {
     this._users = [
       new User(1, "teste@gmail.com", "123456"),
       new User(2, "medico@gmail.com", "medico"),
-      new User(2, "admin@gmail.com", "admin"),
+      new User(3, "admin@gmail.com", "admin"),
     ];
     this._patients = [
       new Patient(1, "João", "01/01/2000", "Masculino", "999999999", "Unimed", "Rua 1", 1),

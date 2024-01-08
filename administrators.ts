@@ -1,9 +1,11 @@
-import { Administrator } from "./models";
-import { waitUser } from "./utils";
 import readLine from "readline-sync";
+import { DoctorController, SpecialtyController, UserController } from "./controllers";
+import { Administrator } from "./models";
+import { waitUser, tryAgain, formatString } from "./utils";
 
-function showMenu(): void {
+function showMenu(name: string): void {
   console.clear();
+  console.log(`=========== Bem vindo(a) ${name} ===========`);
   console.log("1 - Cadastrar médico");
   console.log("2 - Listar médicos");
   console.log("3 - Cadastrar especialidade");
@@ -12,26 +14,93 @@ function showMenu(): void {
 }
 
 function registerDoctor(): void {
-  console.clear();
-  console.log("Cadastrar médico");
-  waitUser();
+  do {
+    console.clear();
+    
+    const email = readLine.question("Digite seu email: ");
+    const existentUser = UserController.getByEmail(email);
+    
+    if (existentUser) {
+      console.log("Email já cadastrado");
+      waitUser();
+      return;
+    }
+
+    const password = readLine.question("Digite sua senha: ");
+    const name = readLine.question("Digite seu nome: ");
+    const birthDate = readLine.question("Digite sua data de nascimento: ");
+    const gender = readLine.question("Digite seu gênero: ");
+    const cellphone = readLine.question("Digite seu celular: ");
+    const licenceNumber = readLine.question("Digite seu CRM: ");
+    const specialtyId = Number(readLine.question("Digite o ID da especialidade: "));
+
+    const registered: any = DoctorController.register(email, password, name, birthDate, gender, cellphone, licenceNumber, specialtyId);
+    
+    console.log(registered.message);
+    waitUser();
+
+    if (registered.status === 200) break;
+    else if (!tryAgain()) break;
+  } while (true);
 }
 
 function listDoctors(): void {
   console.clear();
-  console.log("Listar médicos");
+  const doctors = DoctorController.getAll();
+  if (!doctors.length) {
+    console.log("Nenhum médico cadastrado");
+    waitUser();
+    return;
+  }
+  console.log("Médicos cadastrados:");
+  console.table(doctors);
   waitUser();
 }
 
 function registerSpecialty(): void {
-  console.clear();
-  console.log("Cadastrar especialidade");
-  waitUser();
+  let registered: any = {};
+
+  do {
+    console.clear();
+  
+    const name = readLine.question("Digite o nome da especialidade: ");
+    const type = readLine.question("Digite o tipo da especialidade: ");
+
+    if (formatString(type) === "clinica") {
+      const area = readLine.question("Digite a área da especialidade: ");
+      registered = SpecialtyController.registerClinical(name, area);
+
+    } else if (formatString(type) === "cirurgica") {
+      const surgeryType = readLine.question("Digite a especialidade cirúrgica: ");
+      registered = SpecialtyController.registerSurgical(name, surgeryType);
+
+    } else {
+      console.log("Tipo de especialidade inválido");
+      waitUser();
+
+      if (!tryAgain()) break;
+      continue;
+    }
+
+    console.log(registered.message);
+    waitUser();
+
+    if (registered.status === 200) break;
+    else if (!tryAgain()) break;
+  
+  } while (true);
 }
 
 function listSpecialties(): void {
   console.clear();
-  console.log("Listar especialidades");
+  const specialties = SpecialtyController.getAll();
+  if (!specialties.length) {
+    console.log("Nenhuma especialidade cadastrada");
+    waitUser();
+    return;
+  }
+  console.log("Especialidades cadastradas:");
+  console.table(specialties);
   waitUser();
 }
 
@@ -39,7 +108,7 @@ function showAdministratorsScreen(administrator: Administrator) {
   let option: number = 0;
 
   do {
-    showMenu();
+    showMenu(administrator.name);
     option = parseInt(readLine.question("> "));
     switch (option) {
       case 1:
@@ -55,6 +124,8 @@ function showAdministratorsScreen(administrator: Administrator) {
         listSpecialties();
         break;
       case 5:
+        console.log("Deslogando...");
+        waitUser();
         return;
       default:
         console.log("Opção inválida");

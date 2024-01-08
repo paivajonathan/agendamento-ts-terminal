@@ -259,7 +259,6 @@ class Appointment {
 
   public set doctorId(doctorId: number) {
     if (isNaN(doctorId)) throw new Error("ID do médico inválido.");
-    console.log(doctorId);
     this._doctorId = doctorId;
   }
 

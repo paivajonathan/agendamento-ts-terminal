@@ -14,4 +14,13 @@ function showInitialMenu(): void {
   console.log("3 - Sair");
 }
 
-export { waitUser, showInitialMenu };
+function formatString(str: string): string {
+  return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+function tryAgain(): boolean {
+  const answer: string = readLine.question("Deseja tentar novamente? (s/n) ");
+  return formatString(answer) === "s";
+}
+
+export { waitUser, showInitialMenu, formatString, tryAgain };

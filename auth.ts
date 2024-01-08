@@ -28,6 +28,7 @@ function login() {
   // }
 
   const admin = AdministratorController.getByUserId(user.id);
+  waitUser();
   if (admin) {
     showAdministratorsScreen(admin);
   }

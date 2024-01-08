@@ -1,5 +1,5 @@
 import db from './database';
-import { Appointment, Doctor, History, Patient, User, Administrator } from './models';
+import { Administrator, Appointment, ClinicalSpecialty, Doctor, History, Patient, Specialty, SurgicalSpecialty, User } from './models';
 
 class UserController {
   static authenticate(email: string, password: string): User | undefined {
@@ -45,6 +45,23 @@ class DoctorController {
   static getById(doctorId: number): Doctor | undefined {
     const doctor = db.doctors.find((doctor: Doctor) => doctor.id === doctorId);
     return doctor;
+  }
+
+  static register(email: string, password: string, name: string, birthDate: string, gender: string, cellphone: string, licenceNumber: string, specialtyId: number): object {
+    try {
+      const newUserId = db.users.length + 1;
+      const newUser = new User(newUserId, email, password);
+
+      const newDoctorId = db.doctors.length + 1;
+      const doctor = new Doctor(newDoctorId, name, birthDate, gender, cellphone, licenceNumber, specialtyId, newUser.id);
+
+      db.users.push(newUser);
+      db.doctors.push(doctor);
+
+      return { status: 200, message: "Médico cadastrado com sucesso!" };
+    } catch (error: any) {
+      return { status: 422, message: `Ocorreu um erro ao cadastrar médico: ${error.message}` };
+    }
   }
 }
 
@@ -96,5 +113,33 @@ class HistoryController {
   }
 }
 
-export { AppointmentController, DoctorController, HistoryController, PatientController, UserController, AdministratorController };
+class SpecialtyController {
+  static getAll(): Specialty[] {
+    return db.specialties;
+  }
+
+  static registerClinical(name: string, area: string): object {
+    try {
+      const newSpecialtyId = db.specialties.length + 1;
+      const specialty = new ClinicalSpecialty(newSpecialtyId, name, area);
+      db.specialties.push(specialty);
+      return { status: 200, message: "Especialidade cadastrada com sucesso!" };
+    } catch (error: any) {
+      return { status: 422, message: `Ocorreu um erro ao cadastrar especialidade: ${error.message}` };
+    }
+  }
+
+  static registerSurgical(name: string, surgeryType: string): object {
+    try {
+      const newSpecialtyId = db.specialties.length + 1;
+      const specialty = new SurgicalSpecialty(newSpecialtyId, name, surgeryType);
+      db.specialties.push(specialty);
+      return { status: 200, message: "Especialidade cadastrada com sucesso!" };
+    } catch (error: any) {
+      return { status: 422, message: `Ocorreu um erro ao cadastrar especialidade: ${error.message}` };
+    }
+  }
+}
+
+export { AdministratorController, AppointmentController, DoctorController, HistoryController, PatientController, SpecialtyController, UserController };
 
