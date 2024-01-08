@@ -14,6 +14,10 @@ class UserController {
 }
 
 class PatientController {
+  static getAll(): Patient[] {
+    return db.patients;
+  }
+
   static getPatientByUserId(userId: number): Patient | undefined {
     const patient = db.patients.find((patient: Patient) => patient.userId === userId);
     return patient;
@@ -44,6 +48,11 @@ class DoctorController {
 
   static getById(doctorId: number): Doctor | undefined {
     const doctor = db.doctors.find((doctor: Doctor) => doctor.id === doctorId);
+    return doctor;
+  }
+
+  static getByUserId(userId: number): Doctor | undefined {
+    const doctor = db.doctors.find((doctor: Doctor) => doctor.userId === userId);
     return doctor;
   }
 

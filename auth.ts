@@ -1,11 +1,14 @@
 import { waitUser } from "./utils";
 import { showPatientsScreen } from "./patients";
 import { showAdministratorsScreen } from "./administrators";
-import { UserController, PatientController, AdministratorController } from "./controllers";
+import { showDoctorsScreen } from "./doctors";
+import { UserController, PatientController, AdministratorController, DoctorController } from "./controllers";
+import { tryAgain } from "./utils";
 
 import readLine from "readline-sync";
 
 function login() {
+  console.clear();
   const email = readLine.question("Digite seu email: ");
   const password = readLine.question("Digite sua senha: ");
 
@@ -20,17 +23,19 @@ function login() {
   const patient = PatientController.getPatientByUserId(user.id);
   if (patient) {
     showPatientsScreen(patient);
+    return;
   }
 
-  // const doctor = db.doctors.find((doctor: Doctor) => doctor.userId === user.id);
-  // if (doctor) {
-  //   doctorsScreen(doctor);
-  // }
+  const doctor = DoctorController.getByUserId(user.id);
+  if (doctor) {
+    showDoctorsScreen(doctor);
+    return;
+  }
 
   const admin = AdministratorController.getByUserId(user.id);
-  waitUser();
   if (admin) {
     showAdministratorsScreen(admin);
+    return;
   }
 }
 
@@ -58,6 +63,7 @@ function register(): void {
     console.log(registered.message);
     waitUser();
     if (registered.status === 200) break;
+    else if (!tryAgain()) break;
   } while (true);
 }
 
