@@ -62,7 +62,7 @@ class DoctorController {
       const newUser = new User(newUserId, email, password);
 
       const newDoctorId = db.doctors.length + 1;
-      const doctor = new Doctor(newDoctorId, name, birthDate, gender, cellphone, licenceNumber, specialtyId, newUser.id);
+      const doctor = new Doctor(newDoctorId, name, birthDate, gender, cellphone, licenceNumber, ["10:00"], specialtyId, newUser.id);
 
       db.users.push(newUser);
       db.doctors.push(doctor);
