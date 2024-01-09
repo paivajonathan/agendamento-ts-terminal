@@ -1,5 +1,5 @@
 import db from './database';
-import { Administrator, Appointment, ClinicalSpecialty, Doctor, History, Patient, PresentialAppointment, Specialty, SurgicalSpecialty, User } from './models';
+import { Message, Administrator, Appointment, ClinicalSpecialty, Doctor, History, Patient, PresentialAppointment, Specialty, SurgicalSpecialty, User } from './models';
 
 class UserController {
   static authenticate(email: string, password: string): User | undefined {
@@ -23,7 +23,7 @@ class PatientController {
     return patient;
   }
 
-  static register(email: string, password: string, name: string, birthDate: string, gender: string, cellphone: string, healthInsurance: string, address: string): object {
+  static register(email: string, password: string, name: string, birthDate: string, gender: string, cellphone: string, healthInsurance: string, address: string): Message {
     try {
       const newUserId = db.users.length + 1;
       const newUser = new User(newUserId, email, password);
@@ -34,9 +34,9 @@ class PatientController {
       db.users.push(newUser);
       db.patients.push(patient);
 
-      return { status: 200, message: "Paciente cadastrado com sucesso!" };
+      return new Message(200, "Paciente cadastrado com sucesso!");
     } catch (error: any) {
-      return { status: 422, message: `Ocorreu um erro ao cadastrar paciente: ${error.message}` };
+      return new Message(422, `Ocorreu um erro ao cadastrar paciente: ${error.message}`);
     }
   }
 }
@@ -56,7 +56,7 @@ class DoctorController {
     return doctor;
   }
 
-  static register(email: string, password: string, name: string, birthDate: string, gender: string, cellphone: string, licenceNumber: string, specialtyId: number): object {
+  static register(email: string, password: string, name: string, birthDate: string, gender: string, cellphone: string, licenceNumber: string, specialtyId: number): Message {
     try {
       const newUserId = db.users.length + 1;
       const newUser = new User(newUserId, email, password);
@@ -67,9 +67,9 @@ class DoctorController {
       db.users.push(newUser);
       db.doctors.push(doctor);
 
-      return { status: 200, message: "Médico cadastrado com sucesso!" };
+      return new Message(200, "Médico cadastrado com sucesso!");
     } catch (error: any) {
-      return { status: 422, message: `Ocorreu um erro ao cadastrar médico: ${error.message}` };
+      return new Message(422, `Ocorreu um erro ao cadastrar médico: ${error.message}`);
     }
   }
 }
@@ -100,7 +100,7 @@ class AppointmentController {
     return appointments;
   }
 
-  static createPresential(patientId: number, doctorId: number, date: string): object {
+  static createPresential(patientId: number, doctorId: number, date: string): Message {
     try {
       const doctor = DoctorController.getById(doctorId);
       if (!doctor) throw new Error("Médico não encontrado.");
@@ -108,9 +108,23 @@ class AppointmentController {
       const newAppointmentId = db.appointments.length + 1;
       const appointment = new PresentialAppointment(newAppointmentId, "sala", date, patientId, doctorId);
       db.appointments.push(appointment);
-      return { status: 200, message: "Consulta marcada com sucesso!" };
+      return new Message(200, "Consulta marcada com sucesso!");
     } catch (error: any) {
-      return { status: 422, message: `Ocorreu um erro ao marcar consulta: ${error.message}` };
+      return new Message(422, `Ocorreu um erro ao marcar consulta: ${error.message}`);
+    }
+  }
+
+  static createVirtual(patientId: number, doctorId: number, date: string): Message {
+    try {
+      const doctor = DoctorController.getById(doctorId);
+      if (!doctor) throw new Error("Médico não encontrado.");
+
+      const newAppointmentId = db.appointments.length + 1;
+      const appointment = new PresentialAppointment(newAppointmentId, "virtual", date, patientId, doctorId);
+      db.appointments.push(appointment);
+      return new Message(200, "Consulta marcada com sucesso!");
+    } catch (error: any) {
+      return new Message(422, `Ocorreu um erro ao marcar consulta: ${error.message}`);
     }
   }
 }
@@ -127,25 +141,25 @@ class SpecialtyController {
     return db.specialties;
   }
 
-  static registerClinical(name: string, area: string): object {
+  static registerClinical(name: string, area: string): Message {
     try {
       const newSpecialtyId = db.specialties.length + 1;
       const specialty = new ClinicalSpecialty(newSpecialtyId, name, area);
       db.specialties.push(specialty);
-      return { status: 200, message: "Especialidade cadastrada com sucesso!" };
+      return new Message(200, "Especialidade cadastrada com sucesso!");
     } catch (error: any) {
-      return { status: 422, message: `Ocorreu um erro ao cadastrar especialidade: ${error.message}` };
+      return new Message(422, `Ocorreu um erro ao cadastrar especialidade: ${error.message}`);
     }
   }
 
-  static registerSurgical(name: string, surgeryType: string): object {
+  static registerSurgical(name: string, surgeryType: string): Message {
     try {
       const newSpecialtyId = db.specialties.length + 1;
       const specialty = new SurgicalSpecialty(newSpecialtyId, name, surgeryType);
       db.specialties.push(specialty);
-      return { status: 200, message: "Especialidade cadastrada com sucesso!" };
+      return new Message(200, "Especialidade cadastrada com sucesso!");
     } catch (error: any) {
-      return { status: 422, message: `Ocorreu um erro ao cadastrar especialidade: ${error.message}` };
+      return new Message(422, `Ocorreu um erro ao cadastrar especialidade: ${error.message}`);
     }
   }
 }

@@ -25,18 +25,18 @@ class Database {
 
   private constructor() {
     this._users = [
-      new User(1, "teste@gmail.com", "123456"),
-      new User(2, "medico@gmail.com", "medico"),
-      new User(3, "admin@gmail.com", "admin"),
+      new User(1, "teste@gmail.com", "Teste@123"),
+      new User(2, "medico@gmail.com", "Medico@123"),
+      new User(3, "admin@gmail.com", "Admin@123"),
     ];
     this._patients = [
-      new Patient(1, "João", "01/01/2000", "Masculino", "999999999", "Unimed", "Rua 1", 1),
+      new Patient(1, "João", "01/01/2000", "M", "86994717931", "Unimed", "Rua 1", 1),
     ];
     this._doctors = [
-      new Doctor(1, "Médico", "01/01/2000", "Masculino", "999999999", "123456", 1, 2),
+      new Doctor(1, "Médico", "01/01/2000", "M", "999999999", "123456", ["10:00"], 1, 2),
     ];
     this._administrators = [
-      new Administrator(1, "Admin", "01/01/2000", "Masculino", "999999999", "Administração", 3),
+      new Administrator(1, "Admin", "01/01/2000", "F", "999999999", "Administração", 3),
     ];
     this._appointments = [
       new VirtualAppointment(1, "Zoom", "01/01/2000", 1, 1),

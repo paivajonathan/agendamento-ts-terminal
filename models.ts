@@ -1,3 +1,10 @@
+class Message {
+  constructor(public status: number, public message: string) {
+    this.status = status;
+    this.message = message;
+  }
+}
+
 class User {
   private _id: number = 0;
   private _email: string = "";
@@ -18,7 +25,9 @@ class User {
     this._email = email;
   }
   public set password(password: string) {
-    const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/g;
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/
+
+    console.log("Testando senha");
     if (!regex.test(password)) throw new Error("Senha inválida.");
     this._password = password;
   }
@@ -76,14 +85,15 @@ class Person {
   }
 
   public set gender(gender: string) {
-    const options = ["Masculino", "Feminino", "Outro"];
-    if (!(gender in options)) throw new Error("Gênero inválido.");
+    const options = ["M", "F", "O"];
+    if (!(options.includes(gender))) throw new Error("Gênero inválido.");
     this._gender = gender;
   }
 
   public set cellphone(cellphone: string) {
-    const regex = /^\d{10,11}$/;
+    const regex = /^(\d{2})?(\d{9})$/;
     if (!regex.test(cellphone)) throw new Error("Número de celular inválido.");
+    console.log(cellphone);
     this._cellphone = cellphone;
   }
 
@@ -257,6 +267,7 @@ class ClinicalSpecialty extends Specialty {
 class Doctor extends Person {
   private _licenceNumber: string = "";
   private _specialtyId: number = 0;
+  private _availableTimes: Date[] = [];
 
   constructor(
     id: number,
@@ -265,6 +276,7 @@ class Doctor extends Person {
     gender: string,
     cellphone: string,
     licenceNumber: string,
+    availableTimes: string[],
     specialtyId: number,
     userId: number,
   ) {
@@ -275,6 +287,7 @@ class Doctor extends Person {
 
   public get licenceNumber(): string { return this._licenceNumber; }
   public get specialtyId(): number { return this._specialtyId; }
+  public getAvailableTimes(): Date[] { return this._availableTimes; }
 
   public set licenceNumber(licenceNumber: string) {
     if (licenceNumber.length < 3 || licenceNumber.length > 100) throw new Error("Número de licença inválido.");
@@ -284,6 +297,13 @@ class Doctor extends Person {
   public set specialtyId(specialtyId: number) {
     if (isNaN(specialtyId) || specialtyId <= 0) throw new Error("ID da especialidade inválido.");
     this._specialtyId = specialtyId;
+  }
+
+  public set availableTimes(availableTimes: string[]) {
+    const regex = /^\d{2}:\d{2}$/;
+    const invalidTimes = availableTimes.filter((time) => !regex.test(time));
+    if (invalidTimes.length > 0) throw new Error("Data inválida.");
+    this._availableTimes = availableTimes.map((time) => new Date(time));
   }
 }
 
@@ -407,5 +427,6 @@ export {
   History,
   Specialty,
   ClinicalSpecialty,
-  SurgicalSpecialty
+  SurgicalSpecialty,
+  Message,
 };
