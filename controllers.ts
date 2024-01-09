@@ -1,5 +1,5 @@
 import db from './database';
-import { Administrator, Appointment, ClinicalSpecialty, Doctor, History, Patient, Specialty, SurgicalSpecialty, User } from './models';
+import { Administrator, Appointment, ClinicalSpecialty, Doctor, History, Patient, PresentialAppointment, Specialty, SurgicalSpecialty, User } from './models';
 
 class UserController {
   static authenticate(email: string, password: string): User | undefined {
@@ -100,13 +100,13 @@ class AppointmentController {
     return appointments;
   }
 
-  static create(patientId: number, doctorId: number, date: string): object {
+  static createPresential(patientId: number, doctorId: number, date: string): object {
     try {
       const doctor = DoctorController.getById(doctorId);
       if (!doctor) throw new Error("Médico não encontrado.");
 
       const newAppointmentId = db.appointments.length + 1;
-      const appointment = new Appointment(newAppointmentId, patientId, doctorId, date);
+      const appointment = new PresentialAppointment(newAppointmentId, "sala", date, patientId, doctorId);
       db.appointments.push(appointment);
       return { status: 200, message: "Consulta marcada com sucesso!" };
     } catch (error: any) {

@@ -46,7 +46,7 @@ function makeAppointment(patientId: number): void {
     const doctorId = Number(readLine.question("ID do médico: "));
     const date = readLine.question("Data da consulta: ");
 
-    const appointment: any = AppointmentController.create(patientId, doctorId, date);
+    const appointment: any = AppointmentController.createPresential(patientId, doctorId, date);
 
     console.log(appointment.message);
     waitUser();

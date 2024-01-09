@@ -1,38 +1,40 @@
 class User {
-  private _id: number;
-  private _email: string;
-  private _password: string;
+  private _id: number = 0;
+  private _email: string = "";
+  private _password: string = "";
 
   constructor(id: number, email: string, password: string) {
     this._id = id;
-    this._email = email;
+    this.email = email;
     this._password = password;
   }
 
-  public get email(): string {
-    return this._email;
+  public get email(): string { return this._email; }
+  public get password(): string { return this._password; }
+  public get id(): number { return this._id; }
+  public set email(email: string) {
+    const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+    if (!regex.test(email)) throw new Error("Email inválido.");
+    this._email = email;
   }
-
-  public get password(): string {
-    return this._password;
+  public set password(password: string) {
+    const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/g;
+    if (!regex.test(password)) throw new Error("Senha inválida.");
+    this._password = password;
   }
-
-  public get id(): number {
-    return this._id;
-  }
-
   public set id(id: number) {
+    if (isNaN(id) || id <= 0) throw new Error("ID inválido.");
     this._id = id;
   }
 }
 
 class Person {
-  private _id: number;
-  private _name: string;
-  private _birthDate: Date;
-  private _gender: string;
-  private _cellphone: string;
-  private _userId: number;
+  private _id: number = 0;
+  private _name: string = "";
+  private _birthDate: Date = new Date();
+  private _gender: string = "";
+  private _cellphone: string = "";
+  private _userId: number = 0;
 
   constructor(
     id: number,
@@ -44,51 +46,50 @@ class Person {
   ) {
     this._id = id;
     this._name = name;
-    this._birthDate = new Date(birthDate);
+    this.birthDate = birthDate;
     this._gender = gender;
     this._cellphone = cellphone;
     this._userId = userId;
   }
 
-  public get id(): number {
-    return this._id;
+  public get id(): number { return this._id; }
+  public get name(): string { return this._name; }
+  public get birthDate(): Date { return this._birthDate; }
+  public get gender(): string { return this._gender; }
+  public get cellphone(): string { return this._cellphone; }
+  public get userId(): number { return this._userId; }
+
+  public set id(id: number) {
+    if (isNaN(id) || id <= 0) throw new Error("ID inválido.");
+    this._id = id;
   }
 
-  public get name(): string {
-    return this._name;
+  public set name(name: string) {
+    if (name.length < 3 || name.length > 100) throw new Error("Nome inválido.");
+    this._name = name;
   }
 
-  public get birthDate(): Date {
-    return this._birthDate;
-  }
-
-  public get gender(): string {
-    return this._gender;
-  }
-
-  public get cellphone(): string {
-    return this._cellphone;
-  }
-
-  public get userId(): number {
-    return this._userId;
-  }
-
-  public set birthDate(birthDate: Date) {
-    this._birthDate = birthDate;
+  public set birthDate(birthDate: string) {
+    const regex = /^\d{2}([./-])\d{2}\1\d{4}$/;
+    if (!regex.test(birthDate.toString())) throw new Error("Data de nascimento inválida.");
+    this._birthDate = new Date(birthDate);
   }
 
   public set gender(gender: string) {
+    const options = ["Masculino", "Feminino", "Outro"];
+    if (!(gender in options)) throw new Error("Gênero inválido.");
     this._gender = gender;
   }
 
   public set cellphone(cellphone: string) {
+    const regex = /^\d{10,11}$/;
+    if (!regex.test(cellphone)) throw new Error("Número de celular inválido.");
     this._cellphone = cellphone;
   }
 }
 
 class Administrator extends Person {
-  private _role: string;
+  private _role: string = "";
 
   constructor(
     id: number,
@@ -102,11 +103,18 @@ class Administrator extends Person {
     super(id, name, birthDate, gender, cellphone, userId);
     this._role = role;
   }
+
+  public get role(): string { return this._role; }
+
+  public set role(role: string) {
+    if (role.length < 3 || role.length > 100) throw new Error("Cargo inválido.");
+    this._role = role;
+  }
 }
 
 class Patient extends Person {
-  private _healthInsurance: string;
-  private _address: string;
+  private _healthInsurance: string = "";
+  private _address: string = "";
 
   constructor(
     id: number,
@@ -119,46 +127,33 @@ class Patient extends Person {
     userId: number,
   ) {
     super(id, name, birthDate, gender, cellphone, userId);
-    this._healthInsurance = healthInsurance;
-    this._address = address;
+    this.healthInsurance = healthInsurance;
+    this.address = address;
   }
 
-  public get healthInsurance(): string {
-    return this._healthInsurance;
-  }
-
-  public get address(): string {
-    return this._address;
-  }
+  public get healthInsurance(): string { return this._healthInsurance; }
+  public get address(): string { return this._address; }
 
   public set healthInsurance(healthInsurance: string) {
+    if (healthInsurance.length < 3 || healthInsurance.length > 100) throw new Error("Plano de saúde inválido.");
     this._healthInsurance = healthInsurance;
   }
 
   public set address(address: string) {
+    if (address.length < 3 || address.length > 100) throw new Error("Endereço inválido.");
     this._address = address;
   }
 }
 
 class History {
-  private _patientId: number;
-  private _allergies: string[];
-  private _medicationsInUse: string[];
+  private _patientId: number = 0;
+  private _allergies: string[] = [];
+  private _medicationsInUse: string[] = [];
 
-  constructor(patientId: number) {
-    this._patientId = patientId;
-    this._allergies = [];
-    this._medicationsInUse = [];
-  }
-
-  public addAllergy(allergy: string) {
-    if (this._allergies.includes(allergy)) return;
-    this._allergies.push(allergy);
-  }
-
-  public addMedicationInUse(medication: string) {
-    if (this._medicationsInUse.includes(medication)) return;
-    this._medicationsInUse.push(medication);
+  constructor(patientId: number, allergies: string[], medicationsInUse: string[]) {
+    this.patientId = patientId;
+    this.allergies = allergies;
+    this.medicationsInUse = medicationsInUse;
   }
 
   public get patientId(): number {
@@ -172,39 +167,91 @@ class History {
   public get medicationsInUse(): string[] {
     return this._medicationsInUse;
   }
+
+  public set patientId(patientId: number) {
+    if (isNaN(patientId) || patientId <= 0) throw new Error("ID do paciente inválido.");
+    this._patientId = patientId;
+  }
+
+  public set allergies(allergies: string[]) {
+    const duplicates = allergies.filter((allergy, index) => allergies.indexOf(allergy) !== index);
+    if (duplicates.length > 0) throw new Error("Alergias duplicadas.");
+
+    const invalidAllergies = allergies.filter((allergy) => allergy.length < 3 || allergy.length > 100);
+    if (invalidAllergies.length > 0) throw new Error("Alergias inválidas.");
+
+    this._allergies = allergies;
+  }
+
+  public set medicationsInUse(medicationsInUse: string[]) {
+    const duplicates = medicationsInUse.filter((medication, index) => medicationsInUse.indexOf(medication) !== index);
+    if (duplicates.length > 0) throw new Error("Medicamentos duplicados.");
+
+    const invalidMedications = medicationsInUse.filter((medication) => medication.length < 3 || medication.length > 100);
+    if (invalidMedications.length > 0) throw new Error("Medicamentos inválidos.");
+
+    this._medicationsInUse = medicationsInUse;
+  }
 }
 
 abstract class Specialty {
-  private _id: number;
-  private _name: string;
+  private _id: number = 0;
+  private _name: string = "";
 
   constructor(id: number, name: string) {
     this._id = id;
     this._name = name;
   }
+
+  public get id(): number { return this._id; }
+  public get name(): string { return this._name; }
+
+  public set id(id: number) {
+    if (isNaN(id) || id <= 0) throw new Error("ID inválido.");
+    this._id = id;
+  }
+
+  public set name(name: string) {
+    if (name.length < 3 || name.length > 100) throw new Error("Nome inválido.");
+    this._name = name;
+  }
 }
 
 class SurgicalSpecialty extends Specialty {
-  private _surgeryType: string;
+  private _surgeryType: string = "";
 
   constructor(id: number, name: string, surgeryType: string) {
     super(id, name);
     this._surgeryType = surgeryType;
   }
+
+  public get surgeryType(): string { return this._surgeryType; }
+
+  public set surgeryType(surgeryType: string) {
+    if (surgeryType.length < 3 || surgeryType.length > 100) throw new Error("Tipo de cirurgia inválido.");
+    this._surgeryType = surgeryType;
+  }
 }
 
 class ClinicalSpecialty extends Specialty {
-  private _clinicalArea: string;
+  private _clinicalArea: string = "";
 
   constructor(id: number, name: string, clinicalArea: string) {
     super(id, name);
     this._clinicalArea = clinicalArea;
   }
+
+  public get clinicalArea(): string { return this._clinicalArea; }
+
+  public set clinicalArea(clinicalArea: string) {
+    if (clinicalArea.length < 3 || clinicalArea.length > 100) throw new Error("Área clínica inválida.");
+    this._clinicalArea = clinicalArea;
+  }
 }
 
 class Doctor extends Person {
-  private _licenceNumber: string;
-  private _specialtyId: number;
+  private _licenceNumber: string = "";
+  private _specialtyId: number = 0;
 
   constructor(
     id: number,
@@ -220,10 +267,23 @@ class Doctor extends Person {
     this._licenceNumber = licenceNumber;
     this._specialtyId = specialtyId;
   }
+
+  public get licenceNumber(): string { return this._licenceNumber; }
+  public get specialtyId(): number { return this._specialtyId; }
+
+  public set licenceNumber(licenceNumber: string) {
+    if (licenceNumber.length < 3 || licenceNumber.length > 100) throw new Error("Número de licença inválido.");
+    this._licenceNumber = licenceNumber;
+  }
+
+  public set specialtyId(specialtyId: number) {
+    if (isNaN(specialtyId) || specialtyId <= 0) throw new Error("ID da especialidade inválido.");
+    this._specialtyId = specialtyId;
+  }
 }
 
-class Appointment {
-  private _id: number;
+abstract class Appointment {
+  private _id: number = 0;
   private _patientId: number = 0;
   private _doctorId: number = 0;
   private _date: Date = new Date();
@@ -234,31 +294,35 @@ class Appointment {
     doctorId: number,
     date: string
   ) {
-    this._id = id;
+    this.id = id;
     this.patientId = patientId;
     this.doctorId = doctorId;
     this.date = date;
   }
 
-  public get patientId(): number {
-    return this._patientId;
-  }
+  public abstract schedule(
+    platform?: string,
+    room?: string,
+  ): void;
 
-  public get doctorId(): number {
-    return this._doctorId;
-  }
+  public get patientId(): number { return this._patientId; }
+  public get doctorId(): number { return this._doctorId; }
+  public get date(): Date { return this._date;}
+  public get id(): number { return this._id; }
 
-  public get date(): Date {
-    return this._date;
+  public set id(id: number) {
+    if (isNaN(id)) throw new Error("ID inválido.");
+    if (id <= 0) throw new Error("ID inválido.");
+    this._id = id;
   }
 
   public set patientId(patientId: number) {
-    if (isNaN(patientId)) throw new Error("ID do paciente inválido.");
+    if (isNaN(patientId) || patientId <= 0) throw new Error("ID do paciente inválido.");
     this._patientId = patientId;
   }
 
   public set doctorId(doctorId: number) {
-    if (isNaN(doctorId)) throw new Error("ID do médico inválido.");
+    if (isNaN(doctorId) || doctorId <= 0) throw new Error("ID do médico inválido.");
     this._doctorId = doctorId;
   }
 
@@ -270,7 +334,7 @@ class Appointment {
 }
 
 class VirtualAppointment extends Appointment {
-  private _platform: string;
+  private _platform: string = "";
 
   constructor(
     id: number,
@@ -280,12 +344,26 @@ class VirtualAppointment extends Appointment {
     doctorId: number,
   ) {
     super(id, patientId, doctorId, date);
+    this.schedule(platform, undefined);
+  }
+
+  public schedule(platform?: string, room?: string): void {
+    if (platform === undefined) throw new Error("Plataforma inválida.");
+    this.platform = platform;
+  }
+
+  public get platform(): string {
+    return this._platform;
+  }
+
+  public set platform(platform: string) {
+    if (platform.length < 3 || platform.length > 100) throw new Error("Plataforma inválida.");
     this._platform = platform;
   }
 }
 
 class PresentialAppointment extends Appointment {
-  private _room: string;
+  private _room: string = "";
 
   constructor(
     id: number,
@@ -295,6 +373,20 @@ class PresentialAppointment extends Appointment {
     doctorId: number,
   ) {
     super(id, patientId, doctorId, date);
+    this.schedule(undefined, room);
+  }
+
+  public schedule(platform?: string, room?: string): void {
+    if (room === undefined) throw new Error("Sala inválida.");
+    this.room = room;
+  }
+
+  public get room(): string {
+    return this._room;
+  }
+
+  public set room(room: string) {
+    if (room.length < 3 || room.length > 100) throw new Error("Sala inválida.");
     this._room = room;
   }
 }
