@@ -1,8 +1,10 @@
 import readLine from "readline-sync";
 import { login, register } from "./auth";
 import { showInitialMenu, waitUser } from "./utils";
+import seedDatabase from "./seeder";
 
 function showMainScreen(): void {
+  seedDatabase();
   let answer: number = 0;
 
   do {

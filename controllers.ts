@@ -64,12 +64,7 @@ class DoctorController {
     const doctor = DoctorController.getById(doctorId);
     if (!doctor) return [];
     date = date.split("/").reverse().join("-");
-    console.log(date);
-    console.log(new Date(date));
-    const docAppointments = db.appointments.filter((appointment: Appointment) => appointment.doctorId === doctorId);
-    console.log(docAppointments);
     const appointments = db.appointments.filter((appointment: Appointment) => appointment.doctorId === doctorId && appointment.date.toISOString() === new Date(date).toISOString());
-    console.log(appointments);
     const availableTimes = doctor.availableTimes.filter((time: string) => !appointments.some((appointment: Appointment) => appointment.time === time));
     return availableTimes;
   }

@@ -1,3 +1,5 @@
+import db from "./database";
+
 class Message {
   constructor(public status: number, public message: string) {
     this.status = status;
@@ -329,6 +331,7 @@ abstract class Appointment {
     this.doctorId = doctorId;
     this.date = date;
     this.time = time;
+    console.log(db.appointments)
   }
 
   public abstract schedule(
