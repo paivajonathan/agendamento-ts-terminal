@@ -1,5 +1,5 @@
 import db from './database';
-import { Message, Administrator, Appointment, ClinicalSpecialty, Doctor, History, Patient, PresentialAppointment, Specialty, SurgicalSpecialty, User } from './models';
+import { Message, Administrator, Appointment, ClinicalSpecialty, Doctor, History, Patient, PresentialAppointment, Specialty, SurgicalSpecialty, User, VirtualAppointment } from './models';
 
 class UserController {
   static authenticate(email: string, password: string): User | undefined {
@@ -116,7 +116,7 @@ class AppointmentController {
       if (!doctor) throw new Error("Médico não encontrado.");
 
       const newAppointmentId = db.appointments.length + 1;
-      const appointment = new PresentialAppointment(newAppointmentId, "sala", date, patientId, doctorId);
+      const appointment = new PresentialAppointment(newAppointmentId, "sala", date, patientId, doctorId, "10:00");
       db.appointments.push(appointment);
       return new Message(200, "Consulta marcada com sucesso!");
     } catch (error: any) {
@@ -130,7 +130,7 @@ class AppointmentController {
       if (!doctor) throw new Error("Médico não encontrado.");
 
       const newAppointmentId = db.appointments.length + 1;
-      const appointment = new PresentialAppointment(newAppointmentId, "virtual", date, patientId, doctorId);
+      const appointment = new VirtualAppointment(newAppointmentId, "zoom", date, patientId, doctorId, "10:00");
       db.appointments.push(appointment);
       return new Message(200, "Consulta marcada com sucesso!");
     } catch (error: any) {

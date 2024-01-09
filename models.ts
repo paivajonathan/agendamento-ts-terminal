@@ -311,17 +311,20 @@ abstract class Appointment {
   private _patientId: number = 0;
   private _doctorId: number = 0;
   private _date: Date = new Date();
+  private _time: string = "";
 
   constructor(
     id: number,
     patientId: number,
     doctorId: number,
-    date: string
+    date: string,
+    time: string,
   ) {
     this.id = id;
     this.patientId = patientId;
     this.doctorId = doctorId;
     this.date = date;
+    this.time = time;
   }
 
   public abstract schedule(
@@ -329,10 +332,11 @@ abstract class Appointment {
     room?: string,
   ): void;
 
+  public get id(): number { return this._id; }
   public get patientId(): number { return this._patientId; }
   public get doctorId(): number { return this._doctorId; }
-  public get date(): Date { return this._date;}
-  public get id(): number { return this._id; }
+  public get date(): Date { return this._date; }
+  public get time(): string { return this._time; }
 
   public set id(id: number) {
     if (isNaN(id)) throw new Error("ID inválido.");
@@ -355,6 +359,12 @@ abstract class Appointment {
     if (!regex.test(date)) throw new Error("Data inválida.");
     this._date = new Date(date);
   }
+
+  public set time(time: string) {
+    const regex = /^\d{2}:\d{2}$/;
+    if (!regex.test(time)) throw new Error("Hora inválida.");
+    this._time = time;
+  }
 }
 
 class VirtualAppointment extends Appointment {
@@ -366,8 +376,9 @@ class VirtualAppointment extends Appointment {
     date: string,
     patientId: number,
     doctorId: number,
+    time: string,
   ) {
-    super(id, patientId, doctorId, date);
+    super(id, patientId, doctorId, date, time);
     this.schedule(platform, undefined);
   }
 
@@ -395,8 +406,9 @@ class PresentialAppointment extends Appointment {
     date: string,
     patientId: number,
     doctorId: number,
+    time: string,
   ) {
-    super(id, patientId, doctorId, date);
+    super(id, patientId, doctorId, date, time);
     this.schedule(undefined, room);
   }
 
