@@ -4,9 +4,9 @@ class User {
   private _password: string = "";
 
   constructor(id: number, email: string, password: string) {
-    this._id = id;
+    this.id = id;
     this.email = email;
-    this._password = password;
+    this.password = password;
   }
 
   public get email(): string { return this._email; }
@@ -44,12 +44,12 @@ class Person {
     cellphone: string,
     userId: number,
   ) {
-    this._id = id;
-    this._name = name;
+    this.id = id;
+    this.name = name;
     this.birthDate = birthDate;
-    this._gender = gender;
-    this._cellphone = cellphone;
-    this._userId = userId;
+    this.gender = gender;
+    this.cellphone = cellphone;
+    this.userId = userId;
   }
 
   public get id(): number { return this._id; }
@@ -86,6 +86,11 @@ class Person {
     if (!regex.test(cellphone)) throw new Error("Número de celular inválido.");
     this._cellphone = cellphone;
   }
+
+  public set userId(userId: number) {
+    if (isNaN(userId) || userId <= 0) throw new Error("ID de usuário inválido.");
+    this._userId = userId;
+  }
 }
 
 class Administrator extends Person {
@@ -101,7 +106,7 @@ class Administrator extends Person {
     userId: number,
   ) {
     super(id, name, birthDate, gender, cellphone, userId);
-    this._role = role;
+    this.role = role;
   }
 
   public get role(): string { return this._role; }
@@ -199,8 +204,8 @@ abstract class Specialty {
   private _name: string = "";
 
   constructor(id: number, name: string) {
-    this._id = id;
-    this._name = name;
+    this.id = id;
+    this.name = name;
   }
 
   public get id(): number { return this._id; }
@@ -222,7 +227,7 @@ class SurgicalSpecialty extends Specialty {
 
   constructor(id: number, name: string, surgeryType: string) {
     super(id, name);
-    this._surgeryType = surgeryType;
+    this.surgeryType = surgeryType;
   }
 
   public get surgeryType(): string { return this._surgeryType; }
@@ -238,7 +243,7 @@ class ClinicalSpecialty extends Specialty {
 
   constructor(id: number, name: string, clinicalArea: string) {
     super(id, name);
-    this._clinicalArea = clinicalArea;
+    this.clinicalArea = clinicalArea;
   }
 
   public get clinicalArea(): string { return this._clinicalArea; }
@@ -264,8 +269,8 @@ class Doctor extends Person {
     userId: number,
   ) {
     super(id, name, birthDate, gender, cellphone, userId);
-    this._licenceNumber = licenceNumber;
-    this._specialtyId = specialtyId;
+    this.licenceNumber = licenceNumber;
+    this.specialtyId = specialtyId;
   }
 
   public get licenceNumber(): string { return this._licenceNumber; }
