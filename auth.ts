@@ -3,7 +3,7 @@ import { showPatientsScreen } from "./patients";
 import { showAdministratorsScreen } from "./administrators";
 import { showDoctorsScreen } from "./doctors";
 import { UserController, PatientController, AdministratorController, DoctorController } from "./controllers";
-import { tryAgain } from "./utils";
+import { continueTyping } from "./utils";
 
 import readLine from "readline-sync";
 
@@ -63,7 +63,7 @@ function register(): void {
     console.log(registered.message);
     waitUser();
     if (registered.status === 200) break;
-    else if (!tryAgain()) break;
+    else if (!continueTyping()) break;
   } while (true);
 }
 

@@ -1,7 +1,7 @@
 import readLine from "readline-sync";
 import { DoctorController, SpecialtyController, UserController } from "./controllers";
 import { Administrator } from "./models";
-import { waitUser, tryAgain, formatString } from "./utils";
+import { waitUser, continueTyping, formatString } from "./utils";
 
 function showMenu(name: string): void {
   console.clear();
@@ -32,6 +32,12 @@ function registerDoctor(): void {
     const gender = readLine.question("Digite seu gênero: ");
     const cellphone = readLine.question("Digite seu celular: ");
     const licenceNumber = readLine.question("Digite seu CRM: ");
+    const times = [];
+    while (true) {
+      let time: string = readLine.question("Digite um horário de atendimento: ");
+      times.push(time);
+      if (!continueTyping("Deseja adicionar outro horário?")) break;
+    }
     const specialtyId = Number(readLine.question("Digite o ID da especialidade: "));
 
     const registered: any = DoctorController.register(email, password, name, birthDate, gender, cellphone, licenceNumber, specialtyId);
@@ -40,7 +46,7 @@ function registerDoctor(): void {
     waitUser();
 
     if (registered.status === 200) break;
-    else if (!tryAgain()) break;
+    else if (!continueTyping()) break;
   } while (true);
 }
 
@@ -78,7 +84,7 @@ function registerSpecialty(): void {
       console.log("Tipo de especialidade inválido");
       waitUser();
 
-      if (!tryAgain()) break;
+      if (!continueTyping()) break;
       continue;
     }
 
@@ -86,7 +92,7 @@ function registerSpecialty(): void {
     waitUser();
 
     if (registered.status === 200) break;
-    else if (!tryAgain()) break;
+    else if (!continueTyping()) break;
   
   } while (true);
 }
