@@ -163,7 +163,11 @@ class History {
   private _allergies: string[] = [];
   private _medicationsInUse: string[] = [];
 
-  constructor(patientId: number, allergies: string[], medicationsInUse: string[]) {
+  constructor(
+    patientId: number,
+    allergies: string[],
+    medicationsInUse: string[],
+  ) {
     this.patientId = patientId;
     this.allergies = allergies;
     this.medicationsInUse = medicationsInUse;

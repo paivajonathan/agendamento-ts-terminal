@@ -23,7 +23,16 @@ class PatientController {
     return patient;
   }
 
-  static register(email: string, password: string, name: string, birthDate: string, gender: string, cellphone: string, healthInsurance: string, address: string): Message {
+  static register(
+    email: string,
+    password: string,
+    name: string,
+    birthDate: string,
+    gender: string,
+    cellphone: string,
+    healthInsurance: string,
+    address: string
+  ): Message {
     try {
       const newUserId = db.users.length + 1;
       const newUser = new User(newUserId, email, password);
