@@ -54,7 +54,13 @@ class DoctorController {
   static getAvailableTimes(date: string, doctorId: number): string[] {
     const doctor = DoctorController.getById(doctorId);
     if (!doctor) return [];
-    const appointments = db.appointments.filter((appointment: Appointment) => appointment.doctorId === doctorId && appointment.date === new Date(date));
+    date = date.split("/").reverse().join("-");
+    console.log(date);
+    console.log(new Date(date));
+    const docAppointments = db.appointments.filter((appointment: Appointment) => appointment.doctorId === doctorId);
+    console.log(docAppointments);
+    const appointments = db.appointments.filter((appointment: Appointment) => appointment.doctorId === doctorId && appointment.date.toISOString() === new Date(date).toISOString());
+    console.log(appointments);
     const availableTimes = doctor.availableTimes.filter((time: string) => !appointments.some((appointment: Appointment) => appointment.time === time));
     return availableTimes;
   }

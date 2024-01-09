@@ -59,6 +59,12 @@ function makeAppointment(patientId: number): void {
     }
     
     const availableTimes = DoctorController.getAvailableTimes(date, doctorId);
+    if (!availableTimes.length) {
+      console.log("Não há horários disponíveis para esta data!");
+      waitUser();
+      continue;
+    }
+
     const time = readLine.question(`Horário da consulta: ${availableTimes.join(", ")}: `);
     if (!availableTimes.includes(time)) {
       console.log("Horário inválido!");
