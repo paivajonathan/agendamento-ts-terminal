@@ -32,6 +32,8 @@ function registerDoctor(): void {
     const gender = readLine.question("Digite seu gênero: ");
     const cellphone = readLine.question("Digite seu celular: ");
     const licenceNumber = readLine.question("Digite seu CRM: ");
+    const appointmentType = readLine.question("Digite o tipo de atendimento: ");
+    const platformRoom = readLine.question("Digite a sala ou plataforma: ");
     const times: string[] = [];
     while (true) {
       let time: string = readLine.question("Digite um horário de atendimento: ");
@@ -48,6 +50,8 @@ function registerDoctor(): void {
       gender,
       cellphone,
       licenceNumber,
+      appointmentType,
+      platformRoom,
       times,
       specialtyId,
     );
@@ -116,7 +120,7 @@ function listSpecialties(): void {
     return;
   }
   console.log("Especialidades cadastradas:");
-  console.table(specialties);
+  specialties.forEach((specialty: string) => console.log(specialty));
   waitUser();
 }
 

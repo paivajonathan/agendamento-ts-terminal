@@ -35,6 +35,16 @@ class User {
     if (isNaN(id) || id <= 0) throw new Error("ID inválido.");
     this._id = id;
   }
+
+  public static create(email: string, password: string): User {
+    const newUser = new User(
+      db.users.length + 1,
+      email,
+      password,
+    );
+    db.users.push(newUser);
+    return newUser;
+  }
 }
 
 class Person {
@@ -234,6 +244,14 @@ abstract class Specialty {
     if (name.length < 3 || name.length > 100) throw new Error("Nome inválido.");
     this._name = name;
   }
+
+  public toString(): string {
+    return `${this.id} - ${this.name}`;
+  }
+
+  public static getAll(): Specialty[] {
+    return db.specialties;
+  }
 }
 
 class SurgicalSpecialty extends Specialty {
@@ -249,6 +267,19 @@ class SurgicalSpecialty extends Specialty {
   public set surgeryType(surgeryType: string) {
     if (surgeryType.length < 3 || surgeryType.length > 100) throw new Error("Tipo de cirurgia inválido.");
     this._surgeryType = surgeryType;
+  }
+
+  public toString(): string {
+    return `${super.toString()} - ${this.surgeryType}`;
+  }
+
+  public static create(name: string, surgeryType: string): void {
+    const specialty = new SurgicalSpecialty(
+      db.specialties.length + 1,
+      name,
+      surgeryType,
+    );
+    db.specialties.push(specialty);
   }
 }
 
@@ -266,11 +297,26 @@ class ClinicalSpecialty extends Specialty {
     if (clinicalArea.length < 3 || clinicalArea.length > 100) throw new Error("Área clínica inválida.");
     this._clinicalArea = clinicalArea;
   }
+
+  public toString(): string {
+    return `${super.toString()} - ${this.clinicalArea}`;
+  }
+
+  public static create(name: string, clinicalArea: string): void {
+    const specialty = new ClinicalSpecialty(
+      db.specialties.length + 1,
+      name,
+      clinicalArea,
+    );
+    db.specialties.push(specialty);
+  }
 }
 
 class Doctor extends Person {
   private _licenceNumber: string = "";
   private _specialtyId: number = 0;
+  private _platformRoom: string = "";
+  private _appointmentType: string = "";
   private _availableTimes: string[] = [];
 
   constructor(
@@ -280,6 +326,8 @@ class Doctor extends Person {
     gender: string,
     cellphone: string,
     licenceNumber: string,
+    appointmentType: string,
+    platformRoom: string,
     availableTimes: string[],
     specialtyId: number,
     userId: number,
@@ -288,11 +336,26 @@ class Doctor extends Person {
     this.licenceNumber = licenceNumber;
     this.availableTimes = availableTimes;
     this.specialtyId = specialtyId;
+    this.platformRoom = platformRoom;
+    this.appointmentType = appointmentType;
   }
 
   public get licenceNumber(): string { return this._licenceNumber; }
   public get specialtyId(): number { return this._specialtyId; }
   public get availableTimes(): string[] { return this._availableTimes; }
+  public get platformRoom(): string { return this._platformRoom; }
+  public get appointmentType(): string { return this._appointmentType; }
+
+  public set appointmentType(appointmentType: string) {
+    if (appointmentType.length < 3 || appointmentType.length > 100) throw new Error("Tipo de consulta inválido.");
+    if (appointmentType !== "presential" && appointmentType !== "virtual") throw new Error("Tipo de consulta inválido.");
+    this._appointmentType = appointmentType;
+  }
+
+  public set platformRoom(platformRoom: string) {
+    if (platformRoom.length < 3 || platformRoom.length > 100) throw new Error("Plataforma ou sala inválida.");
+    this._platformRoom = platformRoom;
+  }
 
   public set licenceNumber(licenceNumber: string) {
     if (licenceNumber.length < 3 || licenceNumber.length > 100) throw new Error("Número de licença inválido.");
@@ -309,6 +372,43 @@ class Doctor extends Person {
     const invalidTimes = availableTimes.filter((time) => !regex.test(time));
     if (invalidTimes.length > 0) throw new Error("Data inválida.");
     this._availableTimes = availableTimes;
+  }
+
+  public static getById(doctorId: number): Doctor {
+    const doctor = db.doctors.find((doctor: Doctor) => doctor.id === doctorId);
+    if (!doctor) throw new Error("Médico não encontrado.");
+    return doctor;
+  }
+
+  public static create(
+    email: string,
+    password: string,
+    name: string,
+    birthDate: string,
+    gender: string,
+    cellphone: string,
+    licenceNumber: string,
+    appointmentType: string,
+    platformRoom: string,
+    times: string[],
+    specialtyId: number,
+  ): Doctor {
+    const user = User.create(email, password);
+    const doctor = new Doctor(
+      db.doctors.length + 1,
+      name,
+      birthDate,
+      gender,
+      cellphone,
+      licenceNumber,
+      appointmentType,
+      platformRoom,
+      times,
+      specialtyId,
+      user.id,
+    );
+    db.doctors.push(doctor);
+    return doctor;
   }
 }
 
@@ -331,6 +431,11 @@ abstract class Appointment {
     this.doctorId = doctorId;
     this.date = date;
     this.time = time;
+
+    const doctor = Doctor.getById(this.doctorId);
+    const appointments = db.appointments.filter((appointment: Appointment) => appointment.doctorId === this.doctorId && appointment.date.toISOString() === this.date.toISOString());
+    const availableTimes = doctor.availableTimes.filter((time: string) => !appointments.some((appointment: Appointment) => appointment.time === time));
+    if (!availableTimes.includes(this.time)) throw new Error("Horário indisponível.");
   }
 
   public abstract schedule(
@@ -352,17 +457,19 @@ abstract class Appointment {
 
   public set patientId(patientId: number) {
     if (isNaN(patientId) || patientId <= 0) throw new Error("ID do paciente inválido.");
+    if (db.patients.find((patient: Patient) => patient.id === patientId) === undefined) throw new Error("Paciente não encontrado.");
     this._patientId = patientId;
   }
 
   public set doctorId(doctorId: number) {
     if (isNaN(doctorId) || doctorId <= 0) throw new Error("ID do médico inválido.");
+    if (db.doctors.find((doctor: Doctor) => doctor.id === doctorId) === undefined) throw new Error("Médico não encontrado.");
     this._doctorId = doctorId;
   }
 
   public set date(birthDate: string) {
     const regex = /^\d{2}([./-])\d{2}\1\d{4}$/;
-    if (!regex.test(birthDate.toString())) throw new Error("Data de nascimento inválida.");
+    if (!regex.test(birthDate.toString())) throw new Error("Data inválida.");
     birthDate = birthDate.split("/").reverse().join("-");
     this._date = new Date(birthDate);
   }
@@ -381,9 +488,9 @@ class VirtualAppointment extends Appointment {
     id: number,
     platform: string,
     date: string,
+    time: string,
     patientId: number,
     doctorId: number,
-    time: string,
   ) {
     super(id, patientId, doctorId, date, time);
     this.schedule(platform, undefined);
@@ -401,6 +508,19 @@ class VirtualAppointment extends Appointment {
   public set platform(platform: string) {
     if (platform.length < 3 || platform.length > 100) throw new Error("Plataforma inválida.");
     this._platform = platform;
+  }
+
+  public static create(platform: string, date: string, time: string, patientId: number, doctorId: number): void {
+    const appointment = new VirtualAppointment(
+      db.appointments.length + 1,
+      platform,
+      date,
+      time,
+      patientId,
+      doctorId,
+    );
+
+    db.appointments.push(appointment);
   }
 }
 
@@ -432,19 +552,23 @@ class PresentialAppointment extends Appointment {
     if (room.length < 3 || room.length > 100) throw new Error("Sala inválida.");
     this._room = room;
   }
+
+  public static create(room: string, date: string, time: string, patientId: number, doctorId: number): void {
+    const appointment = new PresentialAppointment(
+      db.appointments.length + 1,
+      room,
+      date,
+      patientId,
+      doctorId,
+      time,
+    );
+
+    db.appointments.push(appointment);
+  }
 }
 
 export {
-  User,
-  Patient,
-  Doctor,
   Administrator,
-  Appointment,
-  VirtualAppointment,
-  PresentialAppointment,
-  History,
-  Specialty,
-  ClinicalSpecialty,
-  SurgicalSpecialty,
-  Message,
+  Appointment, ClinicalSpecialty, Doctor, History, Message, Patient, PresentialAppointment, Specialty, SurgicalSpecialty, User, VirtualAppointment
 };
+

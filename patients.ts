@@ -1,7 +1,7 @@
 import readLine from "readline-sync";
 import { AppointmentController, DoctorController, HistoryController } from "./controllers";
 import { Patient } from "./models";
-import { waitUser } from "./utils";
+import { continueTyping, waitUser } from "./utils";
 
 function getDoctors(): void {
   const doctors = DoctorController.getAll();
@@ -44,44 +44,15 @@ function makeAppointment(patientId: number): void {
     console.clear();
 
     const doctorId = Number(readLine.question("ID do médico: "));
-    const doctor = DoctorController.getById(doctorId);
-    if (!doctor) {
-      console.log("Médico não encontrado!");
-      waitUser();
-      continue;
-    }
-
     const date = readLine.question("Data da consulta: ");
-    if (!/^\d{2}\/\d{2}\/\d{4}$/.test(date)) {
-      console.log("Data inválida!");
-      waitUser();
-      continue;
-    }
-    
-    const availableTimes = DoctorController.getAvailableTimes(date, doctorId);
-    if (!availableTimes.length) {
-      console.log("Não há horários disponíveis para esta data!");
-      waitUser();
-      continue;
-    }
-
-    const time = readLine.question(`Horário da consulta: ${availableTimes.join(", ")}: `);
-    if (!availableTimes.includes(time)) {
-      console.log("Horário inválido!");
-      waitUser();
-      continue;
-    }
-
-    const appointment = AppointmentController.createPresential("sala 1", date, patientId, doctorId, time);
+    const time = readLine.question(`Horário da consulta: `);
+    const appointment = AppointmentController.create(date, patientId, doctorId, time);
 
     console.log(appointment.message);
     waitUser();
 
     if (appointment.status === 200) break;
-    else {
-      const answer: string = readLine.question("Deseja tentar novamente? (s/n) ");
-      if (answer.toLowerCase() !== "s") break;
-    }
+    else if (!continueTyping()) break;
   } while (true);
 }
 

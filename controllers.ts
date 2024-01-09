@@ -60,15 +60,6 @@ class DoctorController {
     return doctor;
   }
 
-  static getAvailableTimes(date: string, doctorId: number): string[] {
-    const doctor = DoctorController.getById(doctorId);
-    if (!doctor) return [];
-    date = date.split("/").reverse().join("-");
-    const appointments = db.appointments.filter((appointment: Appointment) => appointment.doctorId === doctorId && appointment.date.toISOString() === new Date(date).toISOString());
-    const availableTimes = doctor.availableTimes.filter((time: string) => !appointments.some((appointment: Appointment) => appointment.time === time));
-    return availableTimes;
-  }
-
   static getByUserId(userId: number): Doctor | undefined {
     const doctor = db.doctors.find((doctor: Doctor) => doctor.userId === userId);
     return doctor;
@@ -82,19 +73,25 @@ class DoctorController {
     gender: string,
     cellphone: string,
     licenceNumber: string,
+    appointmentType: string,
+    platformRoom: string,
     times: string[],
     specialtyId: number,
   ): Message {
     try {
-      const newUserId = db.users.length + 1;
-      const newUser = new User(newUserId, email, password);
-
-      const newDoctorId = db.doctors.length + 1;
-      const doctor = new Doctor(newDoctorId, name, birthDate, gender, cellphone, licenceNumber, times, specialtyId, newUser.id);
-
-      db.users.push(newUser);
-      db.doctors.push(doctor);
-
+      Doctor.create(
+        email,
+        password,
+        name,
+        birthDate,
+        gender,
+        cellphone,
+        licenceNumber,
+        appointmentType,
+        platformRoom,
+        times,
+        specialtyId,
+      );
       return new Message(200, "Médico cadastrado com sucesso!");
     } catch (error: any) {
       return new Message(422, `Ocorreu um erro ao cadastrar médico: ${error.message}`);
@@ -128,34 +125,19 @@ class AppointmentController {
     return appointments;
   }
 
-  static createPresential(
-    room: string,
+  static create(
     date: string,
     patientId: number,
     doctorId: number,
     time: string,
   ): Message {
     try {
-      const doctor = DoctorController.getById(doctorId);
-      if (!doctor) throw new Error("Médico não encontrado.");
-
-      const newAppointmentId = db.appointments.length + 1;
-      const appointment = new PresentialAppointment(newAppointmentId, room, date, patientId, doctorId, time);
-      db.appointments.push(appointment);
-      return new Message(200, "Consulta marcada com sucesso!");
-    } catch (error: any) {
-      return new Message(422, `Ocorreu um erro ao marcar consulta: ${error.message}`);
-    }
-  }
-
-  static createVirtual(patientId: number, doctorId: number, date: string): Message {
-    try {
-      const doctor = DoctorController.getById(doctorId);
-      if (!doctor) throw new Error("Médico não encontrado.");
-
-      const newAppointmentId = db.appointments.length + 1;
-      const appointment = new VirtualAppointment(newAppointmentId, "zoom", date, patientId, doctorId, "10:00");
-      db.appointments.push(appointment);
+      const doctor = Doctor.getById(doctorId);
+      if (doctor.appointmentType === "presential") {
+        PresentialAppointment.create(doctor.platformRoom, date, time, patientId, doctorId);
+      } else if (doctor.appointmentType === "virtual") {
+        VirtualAppointment.create(doctor.platformRoom, date, time, patientId, doctorId);
+      }
       return new Message(200, "Consulta marcada com sucesso!");
     } catch (error: any) {
       return new Message(422, `Ocorreu um erro ao marcar consulta: ${error.message}`);
@@ -171,15 +153,15 @@ class HistoryController {
 }
 
 class SpecialtyController {
-  static getAll(): Specialty[] {
-    return db.specialties;
+  static getAll(): string[] {
+    const specialties = Specialty.getAll();
+    const toString = specialties.map((specialty: Specialty) => specialty.toString());
+    return toString;
   }
 
   static registerClinical(name: string, area: string): Message {
     try {
-      const newSpecialtyId = db.specialties.length + 1;
-      const specialty = new ClinicalSpecialty(newSpecialtyId, name, area);
-      db.specialties.push(specialty);
+      ClinicalSpecialty.create(name, area);
       return new Message(200, "Especialidade cadastrada com sucesso!");
     } catch (error: any) {
       return new Message(422, `Ocorreu um erro ao cadastrar especialidade: ${error.message}`);
@@ -188,9 +170,7 @@ class SpecialtyController {
 
   static registerSurgical(name: string, surgeryType: string): Message {
     try {
-      const newSpecialtyId = db.specialties.length + 1;
-      const specialty = new SurgicalSpecialty(newSpecialtyId, name, surgeryType);
-      db.specialties.push(specialty);
+      SurgicalSpecialty.create(name, surgeryType);
       return new Message(200, "Especialidade cadastrada com sucesso!");
     } catch (error: any) {
       return new Message(422, `Ocorreu um erro ao cadastrar especialidade: ${error.message}`);
