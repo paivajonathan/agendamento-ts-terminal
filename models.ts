@@ -331,7 +331,6 @@ abstract class Appointment {
     this.doctorId = doctorId;
     this.date = date;
     this.time = time;
-    console.log(db.appointments)
   }
 
   public abstract schedule(
