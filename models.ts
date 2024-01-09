@@ -26,8 +26,6 @@ class User {
   }
   public set password(password: string) {
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/
-
-    console.log("Testando senha");
     if (!regex.test(password)) throw new Error("Senha inválida.");
     this._password = password;
   }
@@ -81,6 +79,7 @@ class Person {
   public set birthDate(birthDate: string) {
     const regex = /^\d{2}([./-])\d{2}\1\d{4}$/;
     if (!regex.test(birthDate.toString())) throw new Error("Data de nascimento inválida.");
+    birthDate = birthDate.split("/").reverse().join("-");
     this._birthDate = new Date(birthDate);
   }
 
@@ -93,7 +92,6 @@ class Person {
   public set cellphone(cellphone: string) {
     const regex = /^(\d{2})?(\d{9})$/;
     if (!regex.test(cellphone)) throw new Error("Número de celular inválido.");
-    console.log(cellphone);
     this._cellphone = cellphone;
   }
 
@@ -267,7 +265,7 @@ class ClinicalSpecialty extends Specialty {
 class Doctor extends Person {
   private _licenceNumber: string = "";
   private _specialtyId: number = 0;
-  private _availableTimes: Date[] = [];
+  private _availableTimes: string[] = [];
 
   constructor(
     id: number,
@@ -282,12 +280,13 @@ class Doctor extends Person {
   ) {
     super(id, name, birthDate, gender, cellphone, userId);
     this.licenceNumber = licenceNumber;
+    this.availableTimes = availableTimes;
     this.specialtyId = specialtyId;
   }
 
   public get licenceNumber(): string { return this._licenceNumber; }
   public get specialtyId(): number { return this._specialtyId; }
-  public getAvailableTimes(): Date[] { return this._availableTimes; }
+  public getAvailableTimes(): string[] { return this._availableTimes; }
 
   public set licenceNumber(licenceNumber: string) {
     if (licenceNumber.length < 3 || licenceNumber.length > 100) throw new Error("Número de licença inválido.");
@@ -303,7 +302,7 @@ class Doctor extends Person {
     const regex = /^\d{2}:\d{2}$/;
     const invalidTimes = availableTimes.filter((time) => !regex.test(time));
     if (invalidTimes.length > 0) throw new Error("Data inválida.");
-    this._availableTimes = availableTimes.map((time) => new Date(time));
+    this._availableTimes = availableTimes;
   }
 }
 

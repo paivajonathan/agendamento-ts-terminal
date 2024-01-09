@@ -56,13 +56,23 @@ class DoctorController {
     return doctor;
   }
 
-  static register(email: string, password: string, name: string, birthDate: string, gender: string, cellphone: string, licenceNumber: string, specialtyId: number): Message {
+  static register(
+    email: string,
+    password: string,
+    name: string,
+    birthDate: string,
+    gender: string,
+    cellphone: string,
+    licenceNumber: string,
+    times: string[],
+    specialtyId: number,
+  ): Message {
     try {
       const newUserId = db.users.length + 1;
       const newUser = new User(newUserId, email, password);
 
       const newDoctorId = db.doctors.length + 1;
-      const doctor = new Doctor(newDoctorId, name, birthDate, gender, cellphone, licenceNumber, ["10:00"], specialtyId, newUser.id);
+      const doctor = new Doctor(newDoctorId, name, birthDate, gender, cellphone, licenceNumber, times, specialtyId, newUser.id);
 
       db.users.push(newUser);
       db.doctors.push(doctor);

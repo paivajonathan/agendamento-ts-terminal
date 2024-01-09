@@ -22,8 +22,8 @@ function registerDoctor(): void {
     
     if (existentUser) {
       console.log("Email já cadastrado");
-      waitUser();
-      return;
+      if (!continueTyping()) break;
+      continue;
     }
 
     const password = readLine.question("Digite sua senha: ");
@@ -32,15 +32,25 @@ function registerDoctor(): void {
     const gender = readLine.question("Digite seu gênero: ");
     const cellphone = readLine.question("Digite seu celular: ");
     const licenceNumber = readLine.question("Digite seu CRM: ");
-    const times = [];
+    const times: string[] = [];
     while (true) {
       let time: string = readLine.question("Digite um horário de atendimento: ");
       times.push(time);
-      if (!continueTyping("Deseja adicionar outro horário?")) break;
+      if (!continueTyping("Deseja adicionar outro horário? (s/n) ")) break;
     }
     const specialtyId = Number(readLine.question("Digite o ID da especialidade: "));
 
-    const registered: any = DoctorController.register(email, password, name, birthDate, gender, cellphone, licenceNumber, specialtyId);
+    const registered: any = DoctorController.register(
+      email,
+      password,
+      name,
+      birthDate,
+      gender,
+      cellphone,
+      licenceNumber,
+      times,
+      specialtyId,
+    );
     
     console.log(registered.message);
     waitUser();

@@ -1,7 +1,7 @@
 import readLine from "readline-sync";
 
 function waitUser(): void {
-  readLine.question("Pressione enter para continuar");
+  readLine.question("Pressione enter para continuar... ");
   console.clear();
 }
 
