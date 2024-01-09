@@ -286,7 +286,7 @@ class Doctor extends Person {
 
   public get licenceNumber(): string { return this._licenceNumber; }
   public get specialtyId(): number { return this._specialtyId; }
-  public getAvailableTimes(): string[] { return this._availableTimes; }
+  public get availableTimes(): string[] { return this._availableTimes; }
 
   public set licenceNumber(licenceNumber: string) {
     if (licenceNumber.length < 3 || licenceNumber.length > 100) throw new Error("Número de licença inválido.");
@@ -354,10 +354,11 @@ abstract class Appointment {
     this._doctorId = doctorId;
   }
 
-  public set date(date: string) {
+  public set date(birthDate: string) {
     const regex = /^\d{2}([./-])\d{2}\1\d{4}$/;
-    if (!regex.test(date)) throw new Error("Data inválida.");
-    this._date = new Date(date);
+    if (!regex.test(birthDate.toString())) throw new Error("Data de nascimento inválida.");
+    birthDate = birthDate.split("/").reverse().join("-");
+    this._date = new Date(birthDate);
   }
 
   public set time(time: string) {

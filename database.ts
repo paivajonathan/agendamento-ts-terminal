@@ -33,14 +33,14 @@ class Database {
       new Patient(1, "João", "01/01/2000", "M", "86994717931", "Unimed", "Rua 1", 1),
     ];
     this._doctors = [
-      new Doctor(1, "Médico", "01/01/2000", "M", "999999999", "123456", ["10:00"], 1, 2),
+      new Doctor(1, "Médico", "01/01/2000", "M", "999999999", "123456", ["10:00", "12:00"], 1, 2),
     ];
     this._administrators = [
       new Administrator(1, "Admin", "01/01/2000", "F", "999999999", "Administração", 3),
     ];
     this._appointments = [
-      new VirtualAppointment(1, "Zoom", "01/01/2000", 1, 1),
-      new PresentialAppointment(2, "Sala 1", "01/01/2000", 1, 1),
+      new VirtualAppointment(1, "Zoom", "01/01/2000", 1, 1, "10:00"),
+      new PresentialAppointment(2, "Sala 1", "01/01/2000", 1, 1, "12:00"),
     ];
     this._histories = [];
     this._specialties = [

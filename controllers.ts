@@ -51,6 +51,14 @@ class DoctorController {
     return doctor;
   }
 
+  static getAvailableTimes(date: string, doctorId: number): string[] {
+    const doctor = DoctorController.getById(doctorId);
+    if (!doctor) return [];
+    const appointments = db.appointments.filter((appointment: Appointment) => appointment.doctorId === doctorId && appointment.date === new Date(date));
+    const availableTimes = doctor.availableTimes.filter((time: string) => !appointments.some((appointment: Appointment) => appointment.time === time));
+    return availableTimes;
+  }
+
   static getByUserId(userId: number): Doctor | undefined {
     const doctor = db.doctors.find((doctor: Doctor) => doctor.userId === userId);
     return doctor;
@@ -110,13 +118,19 @@ class AppointmentController {
     return appointments;
   }
 
-  static createPresential(patientId: number, doctorId: number, date: string): Message {
+  static createPresential(
+    room: string,
+    date: string,
+    patientId: number,
+    doctorId: number,
+    time: string,
+  ): Message {
     try {
       const doctor = DoctorController.getById(doctorId);
       if (!doctor) throw new Error("Médico não encontrado.");
 
       const newAppointmentId = db.appointments.length + 1;
-      const appointment = new PresentialAppointment(newAppointmentId, "sala", date, patientId, doctorId, "10:00");
+      const appointment = new PresentialAppointment(newAppointmentId, room, date, patientId, doctorId, time);
       db.appointments.push(appointment);
       return new Message(200, "Consulta marcada com sucesso!");
     } catch (error: any) {

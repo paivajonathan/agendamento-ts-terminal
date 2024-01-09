@@ -44,9 +44,29 @@ function makeAppointment(patientId: number): void {
     console.clear();
 
     const doctorId = Number(readLine.question("ID do médico: "));
-    const date = readLine.question("Data da consulta: ");
+    const doctor = DoctorController.getById(doctorId);
+    if (!doctor) {
+      console.log("Médico não encontrado!");
+      waitUser();
+      continue;
+    }
 
-    const appointment: any = AppointmentController.createPresential(patientId, doctorId, date);
+    const date = readLine.question("Data da consulta: ");
+    if (!/^\d{2}\/\d{2}\/\d{4}$/.test(date)) {
+      console.log("Data inválida!");
+      waitUser();
+      continue;
+    }
+    
+    const availableTimes = DoctorController.getAvailableTimes(date, doctorId);
+    const time = readLine.question(`Horário da consulta: ${availableTimes.join(", ")}: `);
+    if (!availableTimes.includes(time)) {
+      console.log("Horário inválido!");
+      waitUser();
+      continue;
+    }
+
+    const appointment = AppointmentController.createPresential("sala 1", date, patientId, doctorId, time);
 
     console.log(appointment.message);
     waitUser();
