@@ -24,6 +24,7 @@ class User {
   public set email(email: string) {
     const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
     if (!regex.test(email)) throw new Error("Email inválido.");
+    if (db.users.find((user: User) => user.email === email)) throw new Error("Email já cadastrado.");
     this._email = email;
   }
   public set password(password: string) {
@@ -168,21 +169,72 @@ class Patient extends Person {
     if (address.length < 3 || address.length > 100) throw new Error("Endereço inválido.");
     this._address = address;
   }
+
+  public static create(
+    email: string,
+    password: string,
+    name: string,
+    birthDate: string,
+    gender: string,
+    cellphone: string,
+    healthInsurance: string,
+    address: string,
+    allergies: string[],
+    medications: string[],
+    comorbities: string[],
+  ): Patient {
+    const user = new User(
+      db.users.length + 1,
+      email,
+      password,
+    );
+    const patient = new Patient(
+      db.patients.length + 1,
+      name,
+      birthDate,
+      gender,
+      cellphone,
+      healthInsurance,
+      address,
+      user.id,
+    );
+    const history = new History(
+      db.histories.length + 1,
+      allergies,
+      medications,
+      comorbities,
+      patient.id,
+    );
+    db.users.push(user);
+    db.patients.push(patient);
+    db.histories.push(history);
+    return patient;
+  }
 }
 
 class History {
-  private _patientId: number = 0;
+  private _id: number = 0;
   private _allergies: string[] = [];
   private _medicationsInUse: string[] = [];
+  private _comorbidities: string[] = [];
+  private _patientId: number = 0;
 
   constructor(
-    patientId: number,
+    id: number,
     allergies: string[],
     medicationsInUse: string[],
+    comorbidities: string[],
+    patientId: number,
   ) {
+    this.id = id;
     this.patientId = patientId;
     this.allergies = allergies;
     this.medicationsInUse = medicationsInUse;
+    this.comorbidities = comorbidities;
+  }
+
+  public get id(): number {
+    return this._id;
   }
 
   public get patientId(): number {
@@ -197,6 +249,15 @@ class History {
     return this._medicationsInUse;
   }
 
+  public get comorbidities(): string[] {
+    return this._comorbidities;
+  }
+
+  public set id(id: number) {
+    if (isNaN(id) || id <= 0) throw new Error("ID inválido.");
+    this._id = id;
+  }
+
   public set patientId(patientId: number) {
     if (isNaN(patientId) || patientId <= 0) throw new Error("ID do paciente inválido.");
     this._patientId = patientId;
@@ -206,7 +267,7 @@ class History {
     const duplicates = allergies.filter((allergy, index) => allergies.indexOf(allergy) !== index);
     if (duplicates.length > 0) throw new Error("Alergias duplicadas.");
 
-    const invalidAllergies = allergies.filter((allergy) => allergy.length < 3 || allergy.length > 100);
+    const invalidAllergies = allergies.filter((allergy) => allergy.length > 100);
     if (invalidAllergies.length > 0) throw new Error("Alergias inválidas.");
 
     this._allergies = allergies;
@@ -216,10 +277,37 @@ class History {
     const duplicates = medicationsInUse.filter((medication, index) => medicationsInUse.indexOf(medication) !== index);
     if (duplicates.length > 0) throw new Error("Medicamentos duplicados.");
 
-    const invalidMedications = medicationsInUse.filter((medication) => medication.length < 3 || medication.length > 100);
+    const invalidMedications = medicationsInUse.filter((medication) => medication.length > 100);
     if (invalidMedications.length > 0) throw new Error("Medicamentos inválidos.");
 
     this._medicationsInUse = medicationsInUse;
+  }
+
+  public set comorbidities(comorbidities: string[]) {
+    const duplicates = comorbidities.filter((comorbidity, index) => comorbidities.indexOf(comorbidity) !== index);
+    if (duplicates.length > 0) throw new Error("Comorbidades duplicadas.");
+
+    const invalidComorbidities = comorbidities.filter((comorbidity) => comorbidity.length > 100);
+    if (invalidComorbidities.length > 0) throw new Error("Comorbidades inválidas.");
+
+    this._comorbidities = comorbidities;
+  }
+
+  public static create(
+    allergies: string[],
+    medicationsInUse: string[],
+    comorbidities: string[],
+    patientId: number,
+  ): History {
+    const history = new History(
+      db.histories.length + 1,
+      allergies,
+      medicationsInUse,
+      comorbidities,
+      patientId,
+    );
+    db.histories.push(history);
+    return history;
   }
 }
 

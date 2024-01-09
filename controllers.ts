@@ -31,18 +31,25 @@ class PatientController {
     gender: string,
     cellphone: string,
     healthInsurance: string,
-    address: string
+    address: string,
+    allergies: string[],
+    medications: string[],
+    comorbities: string[],
   ): Message {
     try {
-      const newUserId = db.users.length + 1;
-      const newUser = new User(newUserId, email, password);
-
-      const newPatientId = db.patients.length + 1;
-      const patient = new Patient(newPatientId, name, birthDate, gender, cellphone, healthInsurance, address, newUser.id);
-
-      db.users.push(newUser);
-      db.patients.push(patient);
-
+      Patient.create(
+        email,
+        password,
+        name,
+        birthDate,
+        gender,
+        cellphone,
+        healthInsurance,
+        address,
+        allergies,
+        medications,
+        comorbities,
+      );
       return new Message(200, "Paciente cadastrado com sucesso!");
     } catch (error: any) {
       return new Message(422, `Ocorreu um erro ao cadastrar paciente: ${error.message}`);
