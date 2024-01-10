@@ -1,7 +1,7 @@
-import db from "../database";
+import db from "../database/database";
+import History from "./history";
 import Person from "./person";
 import User from "./user";
-import History from "./history";
 
 class Patient extends Person {
   private _healthInsurance: string = "";

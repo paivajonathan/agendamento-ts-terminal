@@ -1,4 +1,4 @@
-import db from '../database';
+import db from '../database/database';
 import { Administrator } from '../models/models';
 
 class AdministratorController {

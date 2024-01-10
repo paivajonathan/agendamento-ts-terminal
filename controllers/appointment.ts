@@ -1,4 +1,4 @@
-import db from "../database";
+import db from "../database/database";
 import { Appointment, Doctor, Message, PresentialAppointment, VirtualAppointment } from "../models/models";
 
 class AppointmentController {

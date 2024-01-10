@@ -1,4 +1,4 @@
-import db from "../database";
+import db from "../database/database";
 
 class User {
   private _id: number = 0;

@@ -1,4 +1,4 @@
-import db from "../database";
+import db from "../database/database";
 import Specialty from "./specialty";
 
 class SurgicalSpecialty extends Specialty {

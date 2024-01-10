@@ -6,7 +6,7 @@ import {
   Patient,
   Specialty,
   User,
-} from "./models/models";
+} from "../models/models";
 
 class Database {
   private static instance: Database;

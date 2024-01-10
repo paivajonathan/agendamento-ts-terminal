@@ -1,14 +1,14 @@
-import db from "./database";
 import {
   Administrator,
   ClinicalSpecialty,
   Doctor,
+  History,
   Patient,
   SurgicalSpecialty,
   User,
   VirtualAppointment,
-  History,
-} from "./models/models";
+} from "../models/models";
+import db from "./database";
 
 function seedDatabase() {
   db.users.push(
@@ -21,8 +21,8 @@ function seedDatabase() {
     new Patient(1, "João", "01/01/2000", "M", "86994717931", "Unimed", "Rua 1", 1),
   );
   db.doctors.push(
-    new Doctor(1, "Médico", "01/01/2000", "M", "999999999", "123456","virtual", "zoom", ["10:00", "12:00"], 1, 2,),
-    new Doctor(2, "Drauzio", "01/01/2000", "M", "999999999", "123456","virtual", "zoom", ["18:00"], 1, 4,),
+    new Doctor(1, "Médico", "01/01/2000", "M", "999999999", "123456", "virtual", "zoom", ["10:00", "12:00"], 1, 2,),
+    new Doctor(2, "Drauzio", "01/01/2000", "M", "999999999", "123456", "virtual", "zoom", ["18:00"], 1, 4,),
   );
   db.administrators.push(
     new Administrator(1, "Admin", "01/01/2000", "F", "999999999", "Administração", 3),

@@ -1,4 +1,4 @@
-import db from "../database";
+import db from "../database/database";
 import Doctor from "./doctor";
 import Patient from "./patient";
 

@@ -1,5 +1,5 @@
-import db from "../database";
-import { Patient, Message } from "../models/models";
+import db from "../database/database";
+import { Message, Patient } from "../models/models";
 
 class PatientController {
   static getAll(): string[] {

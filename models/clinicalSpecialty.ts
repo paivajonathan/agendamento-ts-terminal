@@ -1,5 +1,5 @@
+import db from "../database/database";
 import Specialty from "./specialty";
-import db from "../database";
 
 class ClinicalSpecialty extends Specialty {
   private _clinicalArea: string = "";

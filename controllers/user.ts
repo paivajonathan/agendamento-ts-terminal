@@ -1,5 +1,5 @@
+import db from '../database/database';
 import { User } from '../models/models';
-import db from '../database';
 
 class UserController {
   static authenticate(email: string, password: string): User | undefined {

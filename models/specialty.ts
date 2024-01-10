@@ -1,4 +1,4 @@
-import db from "../database";
+import db from "../database/database";
 
 abstract class Specialty {
   private _id: number = 0;

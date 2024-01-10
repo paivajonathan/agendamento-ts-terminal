@@ -1,7 +1,7 @@
 import readLine from "readline-sync";
-import seedDatabase from "./seeder";
-import { AuthView } from "./views/views";
+import seedDatabase from "./database/seeder";
 import { waitUser } from "./utils";
+import { AuthView } from "./views/views";
 
 class MainView {
   private static showInitialMenu(): void {
