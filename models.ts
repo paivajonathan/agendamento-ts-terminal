@@ -669,6 +669,10 @@ class VirtualAppointment extends Appointment {
     this._platform = platform;
   }
 
+  public toString(): string {
+    return `${super.toString()}, Plataforma: ${this.platform}`;
+  }
+
   public static create(platform: string, date: string, time: string, patientId: number, doctorId: number): void {
     const appointment = new VirtualAppointment(
       db.appointments.length + 1,
@@ -711,6 +715,10 @@ class PresentialAppointment extends Appointment {
   public set room(room: string) {
     if (room.length < 3 || room.length > 100) throw new Error("Sala inválida.");
     this._room = room;
+  }
+
+  public toString(): string {
+    return `${super.toString()}, Sala: ${this.room}`;
   }
 
   public static create(room: string, date: string, time: string, patientId: number, doctorId: number): void {
