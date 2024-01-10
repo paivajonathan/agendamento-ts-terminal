@@ -51,7 +51,7 @@ class User {
 class Person {
   private _id: number = 0;
   private _name: string = "";
-  private _birthDate: Date = new Date();
+  private _birthDate: string = "";
   private _gender: string = "";
   private _cellphone: string = "";
   private _userId: number = 0;
@@ -74,7 +74,7 @@ class Person {
 
   public get id(): number { return this._id; }
   public get name(): string { return this._name; }
-  public get birthDate(): Date { return this._birthDate; }
+  public get birthDate(): string { return this._birthDate; }
   public get gender(): string { return this._gender; }
   public get cellphone(): string { return this._cellphone; }
   public get userId(): number { return this._userId; }
@@ -92,8 +92,7 @@ class Person {
   public set birthDate(birthDate: string) {
     const regex = /^\d{2}([./-])\d{2}\1\d{4}$/;
     if (!regex.test(birthDate.toString())) throw new Error("Data de nascimento inválida.");
-    birthDate = birthDate.split("/").reverse().join("-");
-    this._birthDate = new Date(birthDate);
+    this._birthDate = birthDate;
   }
 
   public set gender(gender: string) {
@@ -111,6 +110,10 @@ class Person {
   public set userId(userId: number) {
     if (isNaN(userId) || userId <= 0) throw new Error("ID de usuário inválido.");
     this._userId = userId;
+  }
+
+  public toString(): string {
+    return `Id: ${this.id}, Nome: ${this.name}, Data de nascimento: ${this.birthDate}, Sexo: ${this.gender}, Celular: ${this.cellphone}`;
   }
 }
 
@@ -135,6 +138,10 @@ class Administrator extends Person {
   public set role(role: string) {
     if (role.length < 3 || role.length > 100) throw new Error("Cargo inválido.");
     this._role = role;
+  }
+
+  public toString(): string {
+    return `${super.toString()}, Cargo: ${this.role}`;
   }
 }
 
@@ -168,6 +175,14 @@ class Patient extends Person {
   public set address(address: string) {
     if (address.length < 3 || address.length > 100) throw new Error("Endereço inválido.");
     this._address = address;
+  }
+
+  public toString(): string {
+    return `${super.toString()}, Plano de saúde: ${this.healthInsurance}, Endereço: ${this.address}`;
+  }
+
+  public static getAll(): Patient[] {
+    return db.patients;
   }
 
   public static getById(patientId: number): Patient {
@@ -468,6 +483,10 @@ class Doctor extends Person {
     this._availableTimes = availableTimes;
   }
 
+  public toString(): string {
+    return `${super.toString()}, Número de licença: ${this.licenceNumber}, Tipo de consulta: ${this.appointmentType}, Plataforma ou sala: ${this.platformRoom}, Horários disponíveis: ${this.availableTimes}`;
+  }
+
   public static getById(doctorId: number): Doctor {
     const doctor = db.doctors.find((doctor: Doctor) => doctor.id === doctorId);
     if (!doctor) throw new Error("Médico não encontrado.");
@@ -510,7 +529,7 @@ abstract class Appointment {
   private _id: number = 0;
   private _patientId: number = 0;
   private _doctorId: number = 0;
-  private _date: Date = new Date();
+  private _date: string = "";
   private _time: string = "";
 
   constructor(
@@ -527,7 +546,7 @@ abstract class Appointment {
     this.time = time;
 
     const doctor = Doctor.getById(this.doctorId);
-    const appointments = db.appointments.filter((appointment: Appointment) => appointment.doctorId === this.doctorId && appointment.date.toISOString() === this.date.toISOString());
+    const appointments = db.appointments.filter((appointment: Appointment) => appointment.doctorId === this.doctorId && appointment.date === this.date);
     const availableTimes = doctor.availableTimes.filter((time: string) => !appointments.some((appointment: Appointment) => appointment.time === time));
     if (!availableTimes.includes(this.time)) throw new Error("Horário indisponível.");
   }
@@ -540,7 +559,7 @@ abstract class Appointment {
   public get id(): number { return this._id; }
   public get patientId(): number { return this._patientId; }
   public get doctorId(): number { return this._doctorId; }
-  public get date(): Date { return this._date; }
+  public get date(): string { return this._date; }
   public get time(): string { return this._time; }
 
   public set id(id: number) {
@@ -561,11 +580,10 @@ abstract class Appointment {
     this._doctorId = doctorId;
   }
 
-  public set date(birthDate: string) {
+  public set date(date: string) {
     const regex = /^\d{2}([./-])\d{2}\1\d{4}$/;
-    if (!regex.test(birthDate.toString())) throw new Error("Data inválida.");
-    birthDate = birthDate.split("/").reverse().join("-");
-    this._date = new Date(birthDate);
+    if (!regex.test(date.toString())) throw new Error("Data inválida.");
+    this._date = date;
   }
 
   public set time(time: string) {
@@ -577,7 +595,8 @@ abstract class Appointment {
   public toString(): string {
     const patient = Patient.getById(this.patientId);
     const doctor = Doctor.getById(this.doctorId);
-    return `${this.id} - ${patient.name} - ${doctor.name} - ${this.date.toLocaleDateString("pt-BR")} - ${this.time}`;
+    console.log(this.date);
+    return `${this.id} - ${patient.name} - ${doctor.name} - ${this.date} - ${this.time}`;
   }
 
   public static getAll(): Appointment[] {

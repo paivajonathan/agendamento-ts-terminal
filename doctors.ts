@@ -19,7 +19,7 @@ function listPatients() {
     return;
   }
   console.log("Pacientes:");
-  console.table(patients);
+  patients.forEach((patient: string) => console.log(patient));
   waitUser();
 }
 

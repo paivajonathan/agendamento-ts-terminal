@@ -14,8 +14,10 @@ class UserController {
 }
 
 class PatientController {
-  static getAll(): Patient[] {
-    return db.patients;
+  static getAll(): string[] {
+    const patients = db.patients;
+    const toString = patients.map((patient: Patient) => patient.toString());
+    return toString;
   }
 
   static getPatientByUserId(userId: number): Patient | undefined {
