@@ -561,19 +561,9 @@ abstract class Appointment {
     this.date = date;
     this.time = time;
     this.status = "marcada";
-
-    const doctor = Doctor.getById(this.doctorId);
-    const appointments = db.appointments.filter((appointment: Appointment) => appointment.doctorId === this.doctorId && appointment.date === this.date);
-    const availableTimes = doctor.availableTimes.filter((time: string) => !appointments.some((appointment: Appointment) => appointment.time === time));
-    if (!availableTimes.includes(this.time)) throw new Error("Horário indisponível.");
   }
 
-  public abstract schedule(
-    platform?: string,
-    room?: string,
-  ): void;
-
-  public validate(): void {
+  public schedule(platform?: string, room?: string): void {
     const doctor = Doctor.getById(this.doctorId);
     const appointments = db.appointments.filter((appointment: Appointment) => appointment.doctorId === this.doctorId && appointment.date === this.date);
     const availableTimes = doctor.availableTimes.filter((time: string) => !appointments.some((appointment: Appointment) => appointment.time === time));
@@ -665,6 +655,7 @@ class VirtualAppointment extends Appointment {
   }
 
   public schedule(platform?: string, room?: string): void {
+    super.schedule(undefined, undefined);
     if (platform === undefined) throw new Error("Plataforma inválida.");
     this.platform = platform;
   }
@@ -708,6 +699,7 @@ class PresentialAppointment extends Appointment {
   }
 
   public schedule(platform?: string, room?: string): void {
+    super.schedule(undefined, undefined);
     if (room === undefined) throw new Error("Sala inválida.");
     this.room = room;
   }
