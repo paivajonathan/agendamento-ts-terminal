@@ -4,10 +4,13 @@ import { Doctor } from "./models";
 import { waitUser } from "./utils";
 
 function showMenu(name: string) {
-  console.log(`Bem vindo(a), ${name}`);
+  console.log(`=========== Bem vindo(a) ${name} ===========`);
   console.log("1 - Listar pacientes");
   console.log("2 - Listar consultas");
-  console.log("3 - Deslogar");
+  console.log("3 - Histórico do paciente");
+  console.log("4 - Confirmar consulta");
+  console.log("5 - Cancelar consulta");
+  console.log("6 - Deslogar");
 }
 
 function listPatients() {

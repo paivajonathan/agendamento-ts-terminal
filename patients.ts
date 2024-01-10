@@ -58,7 +58,7 @@ function makeAppointment(patientId: number): void {
 
 function showMenu(name: string): void {
   console.clear();
-  console.log(`Bem vindo, ${name}`);
+  console.log(`=========== Bem vindo(a) ${name} ===========`);
   console.log("Qual ação deseja realizar?");
   console.log("1 - Buscar médicos");
   console.log("2 - Buscar consultas");
