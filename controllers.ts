@@ -1,5 +1,5 @@
 import db from './database';
-import { Message, Administrator, Appointment, ClinicalSpecialty, Doctor, History, Patient, PresentialAppointment, Specialty, SurgicalSpecialty, User, VirtualAppointment } from './models';
+import { Message, Administrator, Appointment, ClinicalSpecialty, Doctor, History, Patient, PresentialAppointment, Specialty, SurgicalSpecialty, User, VirtualAppointment, DataMessage } from './models';
 
 class UserController {
   static authenticate(email: string, password: string): User | undefined {
@@ -131,9 +131,7 @@ class AppointmentController {
 
   static getByDoctorId(doctorId: number): string[] {
     const appointments = Appointment.getAll().filter((appointment: Appointment) => appointment.doctorId === doctorId);
-    console.log(appointments);
     const toString = appointments.map((appointment: Appointment) => appointment.toString());
-    console.log(toString);
     return toString;
   }
 
@@ -163,9 +161,16 @@ class AppointmentController {
 }
 
 class HistoryController {
-  static getByPatientId(patientId: number): History[] {
-    const history = db.histories.filter((history: History) => history.patientId === patientId);
-    return history;
+  static getByPatientId(patientId: number): DataMessage {
+    try {
+      const patient = Patient.getById(patientId);
+      const history = History.getAll().filter((history: History) => history.patientId === patient.id);
+      console.log(history);
+      const firstHistory = history[0];
+      return new DataMessage(200, "Histórico encontrado com sucesso!", history.toString());
+    } catch (error: any) {
+      return new DataMessage(422, `Ocorreu um erro ao buscar histórico: ${error.message}`, "");
+    }
   }
 }
 

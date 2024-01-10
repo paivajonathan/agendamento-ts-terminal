@@ -1,5 +1,5 @@
 import readLine from "readline-sync";
-import { AppointmentController, PatientController } from "./controllers";
+import { AppointmentController, PatientController, HistoryController } from "./controllers";
 import { Doctor } from "./models";
 import { waitUser } from "./utils";
 
@@ -36,6 +36,20 @@ function listAppointments(doctorId: number) {
   waitUser();
 }
 
+function getHistory() {
+  console.clear();
+  const patientId = Number(readLine.question("Digite o id do paciente: "));
+  const history = HistoryController.getByPatientId(patientId);
+  if (history.status !== 200) {
+    console.log(history.message);
+    waitUser();
+    return;
+  }
+  console.log("Histórico:");
+  console.log(history.data);
+  waitUser();
+}
+
 function showDoctorsScreen(doctor: Doctor) {
   let option: number = 0;
 
@@ -53,7 +67,7 @@ function showDoctorsScreen(doctor: Doctor) {
         listAppointments(doctor.id);
         break;
       case 3:
-        // getHistory();
+        getHistory();
         break;
       case 4:
         // confirmAppointment();

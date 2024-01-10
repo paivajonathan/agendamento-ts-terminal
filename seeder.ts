@@ -1,5 +1,5 @@
 import db from "./database";
-import { Administrator, ClinicalSpecialty, Doctor, Patient, SurgicalSpecialty, User, VirtualAppointment } from "./models";
+import { Administrator, ClinicalSpecialty, Doctor, Patient, SurgicalSpecialty, User, VirtualAppointment, History } from "./models";
 
 function seedDatabase() {
   db.users.push(
@@ -19,7 +19,9 @@ function seedDatabase() {
   db.appointments.push(
     new VirtualAppointment(1, "Zoom", "01/01/2000", "10:00", 1, 1),
   );
-  db.histories.push();
+  db.histories.push(
+    new History(1, [], [], [], 1),
+  );
   db.specialties.push(
     new ClinicalSpecialty(1, "Cardiologia", "Cardiologista"),
     new SurgicalSpecialty(2, "Cirurgia Geral", "Cirurgião Geral"),

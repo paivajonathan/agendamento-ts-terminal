@@ -1,5 +1,13 @@
 import db from "./database";
 
+class DataMessage {
+  constructor(public status: number, public message: string, public data: string) {
+    this.status = status;
+    this.message = message;
+    this.data = data;
+  }
+}
+
 class Message {
   constructor(public status: number, public message: string) {
     this.status = status;
@@ -314,21 +322,12 @@ class History {
     this._comorbidities = comorbidities;
   }
 
-  public static create(
-    allergies: string[],
-    medicationsInUse: string[],
-    comorbidities: string[],
-    patientId: number,
-  ): History {
-    const history = new History(
-      db.histories.length + 1,
-      allergies,
-      medicationsInUse,
-      comorbidities,
-      patientId,
-    );
-    db.histories.push(history);
-    return history;
+  public toString(): string {
+    return `Id: ${this.id}, Alergias: ${this.allergies ? this.allergies : "Nenhuma"}, Medicações em uso: ${this.medicationsInUse}, Comorbidades: ${this.comorbidities}`;
+  }
+
+  public static getAll(): History[] {
+    return db.histories;
   }
 }
 
@@ -692,6 +691,17 @@ class PresentialAppointment extends Appointment {
 
 export {
   Administrator,
-  Appointment, ClinicalSpecialty, Doctor, History, Message, Patient, PresentialAppointment, Specialty, SurgicalSpecialty, User, VirtualAppointment
+  Appointment,
+  ClinicalSpecialty,
+  Doctor,
+  History,
+  Message,
+  DataMessage,
+  Patient,
+  PresentialAppointment,
+  Specialty,
+  SurgicalSpecialty,
+  User,
+  VirtualAppointment,
 };
 

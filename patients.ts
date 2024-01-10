@@ -29,13 +29,13 @@ function getAppointments(patientId: number): void {
 
 function getHistory(patientId: number): void {
   const history = HistoryController.getByPatientId(patientId);
-  if (!history.length) {
-    console.log("Nenhum histórico cadastrado!");
+  if (history.status !== 200) {
+    console.log(history.message);
     waitUser();
     return;
   }
   console.log("Histórico:");
-  console.table(history);
+  console.log(history.data);
   waitUser();
 }
 
