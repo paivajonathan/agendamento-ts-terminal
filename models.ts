@@ -323,7 +323,7 @@ class History {
   }
 
   public toString(): string {
-    return `Id: ${this.id}, Alergias: ${this.allergies ? this.allergies : "Nenhuma"}, Medicações em uso: ${this.medicationsInUse}, Comorbidades: ${this.comorbidities}`;
+    return `Id: ${this.id}, Alergias: ${this.allergies.length ? this.allergies : "Nenhuma"}, Medicações em uso: ${this.medicationsInUse.length ? this.medicationsInUse : "Nenhuma"}, Comorbidades: ${this.comorbidities.length ? this.comorbidities : "Nenhuma"}`;
   }
 
   public static getAll(): History[] {
