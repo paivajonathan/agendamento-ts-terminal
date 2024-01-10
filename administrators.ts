@@ -1,7 +1,7 @@
 import readLine from "readline-sync";
 import { DoctorController, SpecialtyController, UserController } from "./controllers";
 import { Administrator } from "./models";
-import { waitUser, continueTyping, formatString } from "./utils";
+import { waitUser, continueTyping, formatString, getPersonData } from "./utils";
 
 function showMenu(name: string): void {
   console.clear();
@@ -17,21 +17,18 @@ function registerDoctor(): void {
   do {
     console.clear();
     
-    const email = readLine.question("Digite o email: ");
-    const password = readLine.question("Digite a senha: ");
-    const name = readLine.question("Digite o nome: ");
-    const birthDate = readLine.question("Digite a data de nascimento: ");
-    const gender = readLine.question("Digite o gênero: ");
-    const cellphone = readLine.question("Digite o celular: ");
+    const [email, password, name, birthDate, gender, cellphone] = getPersonData();
     const licenceNumber = readLine.question("Digite o CRM: ");
-    const serviceType = readLine.question("Digite o tipo de atendimento: ");
-    const platformRoom = readLine.question("Digite a sala ou plataforma: ");
+    const serviceType = readLine.question("Digite o tipo de atendimento (presencial ou virtual):\n>");
+    const platformRoom = readLine.question("Digite a sala ou plataforma:\n>");
+
     const times: string[] = [];
     while (true) {
-      let time: string = readLine.question("Digite um horário de atendimento: ");
+      let time: string = readLine.question("Digite um horário de atendimento (hh:mm):\n>");
       times.push(time);
       if (!continueTyping("Deseja adicionar outro horário? (s/n) ")) break;
     }
+
     const specialtyId = Number(readLine.question("Digite o ID da especialidade: "));
 
     const registered = DoctorController.register(
