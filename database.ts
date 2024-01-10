@@ -6,10 +6,6 @@ import {
   Specialty,
   Administrator,
   Appointment,
-  VirtualAppointment,
-  PresentialAppointment,
-  ClinicalSpecialty,
-  SurgicalSpecialty,
 } from "./models";
 
 class Database {
@@ -24,25 +20,13 @@ class Database {
   private _specialties: Specialty[];
 
   private constructor() {
-    this._users = [
-
-    ];
-    this._patients = [
-
-    ];
-    this._doctors = [
-
-    ];
-    this._administrators = [
-
-    ];
-    this._appointments = [
-
-    ];
+    this._users = [];
+    this._patients = [];
+    this._doctors = [];
+    this._administrators = [];
+    this._appointments = [];
     this._histories = [];
-    this._specialties = [
-
-    ];
+    this._specialties = [];
   }
 
   public static getInstance(): Database {
@@ -82,7 +66,5 @@ class Database {
 }
 
 const db = Database.getInstance();
-
-
 
 export default db;
