@@ -618,8 +618,7 @@ abstract class Appointment {
   public toString(): string {
     const patient = Patient.getById(this.patientId);
     const doctor = Doctor.getById(this.doctorId);
-    console.log(this.date);
-    return `${this.id} - ${patient.name} - ${doctor.name} - ${this.date} - ${this.time}`;
+    return `Id: ${this.id}, Paciente: ${patient.name}, Médico: ${doctor.name}, Data: ${this.date}, Horário: ${this.time}, Situação: ${this.status}`;
   }
 
   public static getAll(): Appointment[] {
