@@ -1,12 +1,12 @@
 import {
-  User,
-  Patient,
-  History,
-  Doctor,
-  Specialty,
   Administrator,
   Appointment,
-} from "./models";
+  Doctor,
+  History,
+  Patient,
+  Specialty,
+  User,
+} from "./models/models";
 
 class Database {
   private static instance: Database;

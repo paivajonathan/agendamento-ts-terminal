@@ -33,4 +33,10 @@ function getPersonData(): any[] {
   return [email, password, name, birthDate, gender, cellphone]
 }
 
-export { waitUser, showInitialMenu, formatString, continueTyping, getPersonData };
+export {
+  waitUser,
+  showInitialMenu,
+  formatString,
+  continueTyping,
+  getPersonData,
+};

@@ -1,5 +1,14 @@
 import db from "./database";
-import { Administrator, ClinicalSpecialty, Doctor, Patient, SurgicalSpecialty, User, VirtualAppointment, History } from "./models";
+import {
+  Administrator,
+  ClinicalSpecialty,
+  Doctor,
+  Patient,
+  SurgicalSpecialty,
+  User,
+  VirtualAppointment,
+  History,
+} from "./models/models";
 
 function seedDatabase() {
   db.users.push(

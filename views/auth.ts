@@ -1,9 +1,8 @@
-import { waitUser } from "./utils";
-import { showPatientsScreen } from "./patients";
-import { showAdministratorsScreen } from "./administrators";
-import { showDoctorsScreen } from "./doctors";
-import { UserController, PatientController, AdministratorController, DoctorController } from "./controllers";
-import { continueTyping, getPersonData } from "./utils";
+import { AdministratorController, DoctorController, PatientController, UserController } from "../controllers/controllers";
+import DoctorView from "./doctors";
+import PatientView from "./patients";
+import AdministratorView from "./administrators";
+import { continueTyping, getPersonData, waitUser } from "../utils";
 
 import readLine from "readline-sync";
 
@@ -23,19 +22,19 @@ function login() {
 
   const patient = PatientController.getPatientByUserId(user.id);
   if (patient) {
-    showPatientsScreen(patient);
+    PatientView.showPatientsScreen(patient);
     return;
   }
 
   const doctor = DoctorController.getByUserId(user.id);
   if (doctor) {
-    showDoctorsScreen(doctor);
+    DoctorView.showDoctorsScreen(doctor);
     return;
   }
 
   const admin = AdministratorController.getByUserId(user.id);
   if (admin) {
-    showAdministratorsScreen(admin);
+    AdministratorView.showAdministratorsScreen(admin);
     return;
   }
 }
@@ -92,3 +91,4 @@ function register(): void {
 }
 
 export { login, register };
+

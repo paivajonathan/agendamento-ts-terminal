@@ -1,5 +1,5 @@
 import readLine from "readline-sync";
-import { login, register } from "./auth";
+import { login, register } from "./views/auth";
 import { showInitialMenu, waitUser } from "./utils";
 import seedDatabase from "./seeder";
 
