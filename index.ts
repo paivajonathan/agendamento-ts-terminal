@@ -1,33 +1,44 @@
 import readLine from "readline-sync";
-import { login, register } from "./views/auth";
-import { showInitialMenu, waitUser } from "./utils";
 import seedDatabase from "./seeder";
+import { AuthView } from "./views/views";
+import { waitUser } from "./utils";
 
-function showMainScreen(): void {
-  seedDatabase();
-  let answer: number = 0;
+class MainView {
+  private static showInitialMenu(): void {
+    console.clear();
+    console.log("=========== Bem vindo(a) ao sistema ===========");
+    console.log("Qual ação deseja realizar?");
+    console.log("1 - Realizar login");
+    console.log("2 - Cadastrar-se");
+    console.log("3 - Sair");
+  }
 
-  do {
-    showInitialMenu();
+  public static showMainScreen(): void {
+    seedDatabase();
+    let answer: number = 0;
 
-    answer = parseInt(readLine.question("> "));
+    do {
+      MainView.showInitialMenu();
 
-    switch (answer) {
-      case 1:
-        login();
-        break;
-      case 2:
-        register();
-        break;
-      case 3:
-        console.log("Saindo...");
-        waitUser();
-        break;
-      default:
-        console.log("Opção inválida");
-        break;
-    }
-  } while (answer !== 3);
+      answer = parseInt(readLine.question("> "));
+
+      switch (answer) {
+        case 1:
+          AuthView.login();
+          break;
+        case 2:
+          AuthView.register();
+          break;
+        case 3:
+          console.log("Saindo...");
+          waitUser();
+          break;
+        default:
+          console.log("Opção inválida");
+          break;
+      }
+    } while (answer !== 3);
+  }
 }
 
-showMainScreen();
+MainView.showMainScreen();
