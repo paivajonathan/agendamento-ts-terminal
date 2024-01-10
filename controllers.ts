@@ -82,7 +82,7 @@ class DoctorController {
     gender: string,
     cellphone: string,
     licenceNumber: string,
-    appointmentType: string,
+    serviceType: string,
     platformRoom: string,
     times: string[],
     specialtyId: number,
@@ -96,7 +96,7 @@ class DoctorController {
         gender,
         cellphone,
         licenceNumber,
-        appointmentType,
+        serviceType,
         platformRoom,
         times,
         specialtyId,
@@ -170,9 +170,9 @@ class AppointmentController {
   ): Message {
     try {
       const doctor = Doctor.getById(doctorId);
-      if (doctor.appointmentType === "presential") {
+      if (doctor.serviceType === "presential") {
         PresentialAppointment.create(doctor.platformRoom, date, time, patientId, doctorId);
-      } else if (doctor.appointmentType === "virtual") {
+      } else if (doctor.serviceType === "virtual") {
         VirtualAppointment.create(doctor.platformRoom, date, time, patientId, doctorId);
       }
       return new Message(200, "Consulta marcada com sucesso!");

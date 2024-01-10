@@ -32,7 +32,7 @@ function registerDoctor(): void {
     const gender = readLine.question("Digite seu gênero: ");
     const cellphone = readLine.question("Digite seu celular: ");
     const licenceNumber = readLine.question("Digite seu CRM: ");
-    const appointmentType = readLine.question("Digite o tipo de atendimento: ");
+    const serviceType = readLine.question("Digite o tipo de atendimento: ");
     const platformRoom = readLine.question("Digite a sala ou plataforma: ");
     const times: string[] = [];
     while (true) {
@@ -50,7 +50,7 @@ function registerDoctor(): void {
       gender,
       cellphone,
       licenceNumber,
-      appointmentType,
+      serviceType,
       platformRoom,
       times,
       specialtyId,

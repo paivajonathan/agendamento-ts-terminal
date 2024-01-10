@@ -299,6 +299,8 @@ class History {
     const invalidAllergies = allergies.filter((allergy) => allergy.length > 100);
     if (invalidAllergies.length > 0) throw new Error("Alergias inválidas.");
 
+    allergies = allergies.filter((allergy) => allergy !== "");
+
     this._allergies = allergies;
   }
 
@@ -309,6 +311,8 @@ class History {
     const invalidMedications = medicationsInUse.filter((medication) => medication.length > 100);
     if (invalidMedications.length > 0) throw new Error("Medicamentos inválidos.");
 
+    medicationsInUse = medicationsInUse.filter((medication) => medication !== "");
+
     this._medicationsInUse = medicationsInUse;
   }
 
@@ -318,6 +322,8 @@ class History {
 
     const invalidComorbidities = comorbidities.filter((comorbidity) => comorbidity.length > 100);
     if (invalidComorbidities.length > 0) throw new Error("Comorbidades inválidas.");
+
+    comorbidities = comorbidities.filter((comorbidity) => comorbidity !== "");
 
     this._comorbidities = comorbidities;
   }
@@ -434,7 +440,7 @@ class Doctor extends Person {
     gender: string,
     cellphone: string,
     licenceNumber: string,
-    appointmentType: string,
+    serviceType: string,
     platformRoom: string,
     availableTimes: string[],
     specialtyId: number,
@@ -445,19 +451,20 @@ class Doctor extends Person {
     this.availableTimes = availableTimes;
     this.specialtyId = specialtyId;
     this.platformRoom = platformRoom;
-    this.appointmentType = appointmentType;
+    this.serviceType = serviceType;
   }
 
   public get licenceNumber(): string { return this._licenceNumber; }
   public get specialtyId(): number { return this._specialtyId; }
   public get availableTimes(): string[] { return this._availableTimes; }
   public get platformRoom(): string { return this._platformRoom; }
-  public get appointmentType(): string { return this._appointmentType; }
+  public get serviceType(): string { return this._appointmentType; }
 
-  public set appointmentType(appointmentType: string) {
-    if (appointmentType.length < 3 || appointmentType.length > 100) throw new Error("Tipo de consulta inválido.");
-    if (appointmentType !== "presential" && appointmentType !== "virtual") throw new Error("Tipo de consulta inválido.");
-    this._appointmentType = appointmentType;
+  public set serviceType(serviceType: string) {
+    const options = ["presencial", "virtual"];
+    if (serviceType.length < 3 || serviceType.length > 100) throw new Error("Tipo de atendimento inválido.");
+    if (!options.includes(serviceType)) throw new Error("Tipo de atendimento inválido.");
+    this._appointmentType = serviceType;
   }
 
   public set platformRoom(platformRoom: string) {
@@ -483,7 +490,7 @@ class Doctor extends Person {
   }
 
   public toString(): string {
-    return `${super.toString()}, Número de licença: ${this.licenceNumber}, Tipo de consulta: ${this.appointmentType}, Plataforma ou sala: ${this.platformRoom}, Horários disponíveis: ${this.availableTimes}`;
+    return `${super.toString()}, Número de licença: ${this.licenceNumber}, Tipo de atendimento: ${this.serviceType}, Plataforma ou sala: ${this.platformRoom}, Horários disponíveis: ${this.availableTimes}`;
   }
 
   public static getById(doctorId: number): Doctor {
@@ -500,7 +507,7 @@ class Doctor extends Person {
     gender: string,
     cellphone: string,
     licenceNumber: string,
-    appointmentType: string,
+    serviceType: string,
     platformRoom: string,
     times: string[],
     specialtyId: number,
@@ -513,7 +520,7 @@ class Doctor extends Person {
       gender,
       cellphone,
       licenceNumber,
-      appointmentType,
+      serviceType,
       platformRoom,
       times,
       specialtyId,
@@ -612,6 +619,7 @@ abstract class Appointment {
   public set status(status: string) {
     const options: string[] = ["marcada", "confirmada", "cancelada"];
     if (status.length < 3 || status.length > 100 || !options.includes(status)) throw new Error("Status inválido.");
+    if (this.status !== "marcada" && (status === "confirmada" || status === "cancelada")) throw new Error(`Esta consulta não pode ser ${status}, pois já está ${this.status}.`);
     this._status = status;
   }
 
