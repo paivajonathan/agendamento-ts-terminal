@@ -11,7 +11,7 @@ function getDoctors(): void {
     return;
   }
   console.log("Médicos cadastrados:");
-  console.table(doctors);
+  doctors.forEach((doctor: string) => console.log(doctor));
   waitUser();
 }
 
@@ -23,7 +23,7 @@ function getAppointments(patientId: number): void {
     return;
   }
   console.log("Consultas cadastradas:");
-  console.table(appointments);
+  appointments.forEach((appointment: string) => console.log(appointment));
   waitUser();
 }
 

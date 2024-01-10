@@ -493,6 +493,10 @@ class Doctor extends Person {
     return `${super.toString()}, Número de licença: ${this.licenceNumber}, Tipo de atendimento: ${this.serviceType}, Plataforma ou sala: ${this.platformRoom}, Horários disponíveis: ${this.availableTimes}`;
   }
 
+  public static getAll(): Doctor[] {
+    return db.doctors;
+  }
+
   public static getById(doctorId: number): Doctor {
     const doctor = db.doctors.find((doctor: Doctor) => doctor.id === doctorId);
     if (!doctor) throw new Error("Médico não encontrado.");

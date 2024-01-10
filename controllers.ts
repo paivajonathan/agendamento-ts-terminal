@@ -60,8 +60,10 @@ class PatientController {
 }
 
 class DoctorController {
-  static getAll(): Doctor[] {
-    return db.doctors;
+  static getAll(): string[] {
+    const doctors = Doctor.getAll();
+    const toString = doctors.map((doctor: Doctor) => doctor.toString());
+    return toString;
   }
 
   static getById(doctorId: number): Doctor | undefined {
@@ -157,9 +159,10 @@ class AppointmentController {
     return toString;
   }
 
-  static getByPatientId(patientId: number): Appointment[] {
-    const appointments = db.appointments.filter((appointment: Appointment) => appointment.patientId === patientId);
-    return appointments;
+  static getByPatientId(patientId: number): string[] {
+    const appointments = Appointment.getAll().filter((appointment: Appointment) => appointment.patientId === patientId);
+    const toString = appointments.map((appointment: Appointment) => appointment.toString());
+    return toString;
   }
 
   static create(
