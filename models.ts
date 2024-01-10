@@ -516,7 +516,11 @@ class Doctor extends Person {
     times: string[],
     specialtyId: number,
   ): Doctor {
-    const user = User.create(email, password);
+    const user = new User(
+      db.users.length + 1,
+      email,
+      password,
+    )
     const doctor = new Doctor(
       db.doctors.length + 1,
       name,
@@ -530,6 +534,7 @@ class Doctor extends Person {
       specialtyId,
       user.id,
     );
+    db.users.push(user);
     db.doctors.push(doctor);
     return doctor;
   }
