@@ -18,18 +18,18 @@ function registerDoctor(): void {
     console.clear();
     
     const [email, password, name, birthDate, gender, cellphone] = getPersonData();
-    const licenceNumber = readLine.question("Digite o CRM: ");
-    const serviceType = readLine.question("Digite o tipo de atendimento (presencial ou virtual):\n>");
-    const platformRoom = readLine.question("Digite a sala ou plataforma:\n>");
+    const licenceNumber = readLine.question("Digite o CRM:\n> ");
+    const serviceType = readLine.question("Digite o tipo de atendimento (presencial ou virtual):\n> ");
+    const platformRoom = readLine.question("Digite a sala ou plataforma:\n> ");
 
     const times: string[] = [];
     while (true) {
-      let time: string = readLine.question("Digite um horário de atendimento (hh:mm):\n>");
+      let time: string = readLine.question("Digite um horário de atendimento (hh:mm):\n> ");
       times.push(time);
-      if (!continueTyping("Deseja adicionar outro horário? (s/n) ")) break;
+      if (!continueTyping("Deseja adicionar outro horário? (s/n)\n> ")) break;
     }
 
-    const specialtyId = Number(readLine.question("Digite o ID da especialidade: "));
+    const specialtyId = Number(readLine.question("Digite o ID da especialidade:\n> "));
 
     const registered = DoctorController.register(
       email,

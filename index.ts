@@ -10,7 +10,7 @@ function showMainScreen(): void {
   do {
     showInitialMenu();
 
-    answer = parseInt(readLine.question("Digite o número da ação: "));
+    answer = parseInt(readLine.question("> "));
 
     switch (answer) {
       case 1:

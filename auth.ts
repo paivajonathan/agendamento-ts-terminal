@@ -45,28 +45,28 @@ function register(): void {
     console.clear();
 
     const [email, password, name, birthDate, gender, cellphone] = getPersonData();
-    const healthInsurance = readLine.question("Digite seu plano de saúde: ");
-    const address = readLine.question("Digite seu endereço: ");
+    const healthInsurance = readLine.question("Digite seu plano de saúde:\n> ");
+    const address = readLine.question("Digite seu endereço:\n> ");
 
     const allergies: string[] = [];
     while (true) {
-      let allergy: string = readLine.question("Digite uma alergia (ou deixe em branco para sair):\n>");
+      let allergy: string = readLine.question("Digite uma alergia (ou deixe em branco para sair):\n> ");
       allergies.push(allergy);
-      if (!continueTyping("Deseja adicionar outra alergia? (s/n) ")) break;
+      if (!continueTyping("Deseja adicionar outra alergia? (s/n)\n> ")) break;
     }
 
     const medications: string[] = [];
     while (true) {
-      let medication: string = readLine.question("Digite um medicamento (ou deixe em branco para sair):\n>");
+      let medication: string = readLine.question("Digite um medicamento (ou deixe em branco para sair):\n> ");
       medications.push(medication);
-      if (!continueTyping("Deseja adicionar outro medicamento? (s/n) ")) break;
+      if (!continueTyping("Deseja adicionar outro medicamento? (s/n)\n> ")) break;
     }
 
     const comorbidities: string[] = [];
     while (true) {
-      let comorbidity: string = readLine.question("Digite uma comorbidade (ou deixe em branco para sair):\n>");
+      let comorbidity: string = readLine.question("Digite uma comorbidade (ou deixe em branco para sair):\n> ");
       comorbidities.push(comorbidity);
-      if (!continueTyping("Deseja adicionar outra comorbidade? (s/n) ")) break;
+      if (!continueTyping("Deseja adicionar outra comorbidade? (s/n)\n> ")) break;
     }
 
     const registered = PatientController.register(

@@ -24,12 +24,12 @@ function continueTyping(message: string = "Deseja tentar novamente? (s/n) "): bo
 }
 
 function getPersonData(): any[] {
-  const email = readLine.question("Digite o email (email@gmail.com):\n>");
-  const password = readLine.question("Digite a senha (Um caractere especial, uma letra maiúscula, uma minúscula e um número):\n>");
-  const name = readLine.question("Digite o nome:\n>");
-  const birthDate = readLine.question("Digite a data de nascimento (dd/mm/aaaa):\n>");
-  const gender = readLine.question("Digite o gênero (M, F ou O):\n>");
-  const cellphone = readLine.question("Digite o celular (11 dígitos, sem máscara):\n>");
+  const email = readLine.question("Digite o email (email@gmail.com):\n> ");
+  const password = readLine.question("Digite a senha (Um caractere especial, uma letra maiúscula, uma minúscula e um número):\n> ");
+  const name = readLine.question("Digite o nome:\n> ");
+  const birthDate = readLine.question("Digite a data de nascimento (dd/mm/aaaa):\n> ");
+  const gender = readLine.question("Digite o gênero (M, F ou O):\n> ");
+  const cellphone = readLine.question("Digite o celular (11 dígitos, sem máscara):\n> ");
   return [email, password, name, birthDate, gender, cellphone]
 }
 
