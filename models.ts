@@ -530,6 +530,7 @@ abstract class Appointment {
   private _doctorId: number = 0;
   private _date: string = "";
   private _time: string = "";
+  private _status = "";
 
   constructor(
     id: number,
@@ -543,6 +544,7 @@ abstract class Appointment {
     this.doctorId = doctorId;
     this.date = date;
     this.time = time;
+    this.status = "marcada";
 
     const doctor = Doctor.getById(this.doctorId);
     const appointments = db.appointments.filter((appointment: Appointment) => appointment.doctorId === this.doctorId && appointment.date === this.date);
@@ -555,11 +557,27 @@ abstract class Appointment {
     room?: string,
   ): void;
 
+  public validate(): void {
+    const doctor = Doctor.getById(this.doctorId);
+    const appointments = db.appointments.filter((appointment: Appointment) => appointment.doctorId === this.doctorId && appointment.date === this.date);
+    const availableTimes = doctor.availableTimes.filter((time: string) => !appointments.some((appointment: Appointment) => appointment.time === time));
+    if (!availableTimes.includes(this.time)) throw new Error("Horário indisponível.");
+  }
+
+  public confirm() {
+    this.status = "confirmada";
+  }
+
+  public cancel() {
+    this.status = "cancelada";
+  }
+
   public get id(): number { return this._id; }
   public get patientId(): number { return this._patientId; }
   public get doctorId(): number { return this._doctorId; }
   public get date(): string { return this._date; }
   public get time(): string { return this._time; }
+  public get status(): string { return this._status; }
 
   public set id(id: number) {
     if (isNaN(id)) throw new Error("ID inválido.");
@@ -591,6 +609,12 @@ abstract class Appointment {
     this._time = time;
   }
 
+  public set status(status: string) {
+    const options: string[] = ["marcada", "confirmada", "cancelada"];
+    if (status.length < 3 || status.length > 100 || !options.includes(status)) throw new Error("Status inválido.");
+    this._status = status;
+  }
+
   public toString(): string {
     const patient = Patient.getById(this.patientId);
     const doctor = Doctor.getById(this.doctorId);
@@ -600,6 +624,12 @@ abstract class Appointment {
 
   public static getAll(): Appointment[] {
     return db.appointments;
+  }
+
+  public static getById(appointmentId: number): Appointment {
+    const appointment = db.appointments.find((appointment: Appointment) => appointment.id === appointmentId);
+    if (!appointment) throw new Error("Consulta não encontrada.");
+    return appointment;
   }
 }
 

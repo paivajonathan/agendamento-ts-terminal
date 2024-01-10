@@ -129,6 +129,28 @@ class AppointmentController {
     return db.appointments;
   }
 
+  static confirm(appointmentId: number, doctorId: number): Message {
+    try {
+      const appointment = Appointment.getById(appointmentId);
+      if (appointment.doctorId !== doctorId) return new Message(422, "Você não pode confirmar uma consulta que não é sua!");
+      appointment.confirm();
+      return new Message(200, "Consulta confirmada com sucesso!");
+    } catch (error: any) {
+      return new Message(422, `Ocorreu um erro ao confirmar consulta: ${error.message}`);
+    }
+  }
+
+  static cancel(appointmentId: number, doctorId: number): Message {
+    try {
+      const appointment = Appointment.getById(appointmentId);
+      if (appointment.doctorId !== doctorId) return new Message(422, "Você não pode cancelar uma consulta que não é sua!");
+      appointment.cancel();
+      return new Message(200, "Consulta cancelada com sucesso!");
+    } catch (error: any) {
+      return new Message(422, `Ocorreu um erro ao cancelar consulta: ${error.message}`);
+    }
+  }
+
   static getByDoctorId(doctorId: number): string[] {
     const appointments = Appointment.getAll().filter((appointment: Appointment) => appointment.doctorId === doctorId);
     const toString = appointments.map((appointment: Appointment) => appointment.toString());

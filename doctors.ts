@@ -53,6 +53,22 @@ function getHistory() {
   waitUser();
 }
 
+function confirmAppointment(doctorId: number) {
+  console.clear();
+  const appointmentId = Number(readLine.question("Digite o id da consulta: "));
+  const confirmation = AppointmentController.confirm(appointmentId, doctorId);
+  console.log(confirmation.message);
+  waitUser();
+}
+
+function cancelAppointment(doctorId: number) {
+  console.clear();
+  const appointmentId = Number(readLine.question("Digite o id da consulta: "));
+  const cancelation = AppointmentController.cancel(appointmentId, doctorId);
+  console.log(cancelation.message);
+  waitUser();
+}
+
 function showDoctorsScreen(doctor: Doctor) {
   let option: number = 0;
 
@@ -73,10 +89,10 @@ function showDoctorsScreen(doctor: Doctor) {
         getHistory();
         break;
       case 4:
-        // confirmAppointment();
+        confirmAppointment(doctor.id);
         break;
       case 5:
-        // cancelAppointment();
+        cancelAppointment(doctor.id);
         break;
       case 6:
         console.log("Saindo...");
