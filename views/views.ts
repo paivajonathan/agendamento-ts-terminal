@@ -1,11 +1,10 @@
-import AdministratorView from "./administrators";
-import DoctorView from "./doctors";
-import PatientView from "./patients";
+import AdministratorView from "./administrator";
 import AuthView from "./auth";
+import DoctorView from "./doctor";
+import PatientView from "./patient";
 
 export {
-  AdministratorView,
-  DoctorView,
-  PatientView,
-  AuthView,
+  AdministratorView, AuthView, DoctorView,
+  PatientView
 };
+

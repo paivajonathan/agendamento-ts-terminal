@@ -1,8 +1,17 @@
-import { AdministratorController, DoctorController, PatientController, UserController } from "../controllers/controllers";
-import DoctorView from "./doctors";
-import PatientView from "./patients";
-import AdministratorView from "./administrators";
-import { continueTyping, getPersonData, waitUser } from "../utils";
+import {
+  AdministratorController,
+  DoctorController,
+  PatientController,
+  UserController,
+} from "../controllers/controllers";
+import {
+  continueTyping,
+  getPersonData,
+  waitUser,
+} from "../utils";
+import AdministratorView from "./administrator";
+import DoctorView from "./doctor";
+import PatientView from "./patient";
 
 import readLine from "readline-sync";
 
@@ -12,7 +21,6 @@ class AuthView {
 
     const email = readLine.question("Digite seu email: ");
     const password = readLine.question("Digite sua senha: ");
-
     const user = UserController.authenticate(email, password);
 
     if (!user) {
