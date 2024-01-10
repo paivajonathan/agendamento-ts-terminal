@@ -127,6 +127,14 @@ class AppointmentController {
     return db.appointments;
   }
 
+  static getByDoctorId(doctorId: number): string[] {
+    const appointments = Appointment.getAll().filter((appointment: Appointment) => appointment.doctorId === doctorId);
+    console.log(appointments);
+    const toString = appointments.map((appointment: Appointment) => appointment.toString());
+    console.log(toString);
+    return toString;
+  }
+
   static getByPatientId(patientId: number): Appointment[] {
     const appointments = db.appointments.filter((appointment: Appointment) => appointment.patientId === patientId);
     return appointments;

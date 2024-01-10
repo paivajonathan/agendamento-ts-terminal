@@ -23,16 +23,16 @@ function listPatients() {
   waitUser();
 }
 
-function listAppointments() {
+function listAppointments(doctorId: number) {
   console.clear();
-  const appointments = AppointmentController.getAll();
+  const appointments = AppointmentController.getByDoctorId(doctorId);
   if (!appointments.length) {
     console.log("Nenhuma consulta cadastrada");
     waitUser();
     return;
   }
   console.log("Consultas:");
-  console.table(appointments);
+  appointments.forEach((appointment: string) => console.log(appointment));
   waitUser();
 }
 
@@ -50,17 +50,26 @@ function showDoctorsScreen(doctor: Doctor) {
         listPatients();
         break;
       case 2:
-        listAppointments();
+        listAppointments(doctor.id);
         break;
       case 3:
-        console.log("Deslogando...");
+        // getHistory();
+        break;
+      case 4:
+        // confirmAppointment();
+        break;
+      case 5:
+        // cancelAppointment();
+        break;
+      case 6:
+        console.log("Saindo...");
         waitUser();
         break;
       default:
         console.log("Opção inválida");
         waitUser();
     }
-  } while (option !== 3);
+  } while (option !== 6);
 }
 
 export { showDoctorsScreen };

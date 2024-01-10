@@ -170,6 +170,12 @@ class Patient extends Person {
     this._address = address;
   }
 
+  public static getById(patientId: number): Patient {
+    const patient = db.patients.find((patient: Patient) => patient.id === patientId);
+    if (!patient) throw new Error("Paciente não encontrado.");
+    return patient;
+  }
+
   public static create(
     email: string,
     password: string,
@@ -566,6 +572,16 @@ abstract class Appointment {
     const regex = /^\d{2}:\d{2}$/;
     if (!regex.test(time)) throw new Error("Hora inválida.");
     this._time = time;
+  }
+
+  public toString(): string {
+    const patient = Patient.getById(this.patientId);
+    const doctor = Doctor.getById(this.doctorId);
+    return `${this.id} - ${patient.name} - ${doctor.name} - ${this.date.toLocaleDateString("pt-BR")} - ${this.time}`;
+  }
+
+  public static getAll(): Appointment[] {
+    return db.appointments;
   }
 }
 
