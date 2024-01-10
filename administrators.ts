@@ -17,21 +17,13 @@ function registerDoctor(): void {
   do {
     console.clear();
     
-    const email = readLine.question("Digite seu email: ");
-    const existentUser = UserController.getByEmail(email);
-    
-    if (existentUser) {
-      console.log("Email já cadastrado");
-      if (!continueTyping()) break;
-      continue;
-    }
-
-    const password = readLine.question("Digite sua senha: ");
-    const name = readLine.question("Digite seu nome: ");
-    const birthDate = readLine.question("Digite sua data de nascimento: ");
-    const gender = readLine.question("Digite seu gênero: ");
-    const cellphone = readLine.question("Digite seu celular: ");
-    const licenceNumber = readLine.question("Digite seu CRM: ");
+    const email = readLine.question("Digite o email: ");
+    const password = readLine.question("Digite a senha: ");
+    const name = readLine.question("Digite o nome: ");
+    const birthDate = readLine.question("Digite a data de nascimento: ");
+    const gender = readLine.question("Digite o gênero: ");
+    const cellphone = readLine.question("Digite o celular: ");
+    const licenceNumber = readLine.question("Digite o CRM: ");
     const serviceType = readLine.question("Digite o tipo de atendimento: ");
     const platformRoom = readLine.question("Digite a sala ou plataforma: ");
     const times: string[] = [];
@@ -42,7 +34,7 @@ function registerDoctor(): void {
     }
     const specialtyId = Number(readLine.question("Digite o ID da especialidade: "));
 
-    const registered: any = DoctorController.register(
+    const registered = DoctorController.register(
       email,
       password,
       name,
