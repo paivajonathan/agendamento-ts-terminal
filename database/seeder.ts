@@ -69,7 +69,7 @@ function seedDatabase() {
     ),
   );
   db.appointments.push(
-    new VirtualAppointment(1, "Zoom", "01/01/2000", "10:00", 1, 1),
+    new VirtualAppointment(1, "Zoom", "01/02/2024", "10:00", 1, 1),
   );
   db.histories.push(
     new History(

@@ -68,6 +68,10 @@ abstract class Appointment {
   public set date(date: string) {
     const regex = /^\d{2}([./-])\d{2}\1\d{4}$/;
     if (!regex.test(date.toString())) throw new Error("Data inválida.");
+    const today = new Date();
+    const [day, month, year] = date.split(/[./-]/);
+    const appointmentDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+    if (appointmentDate < today) throw new Error("Data inválida, escolha uma data futura.");
     this._date = date;
   }
 
