@@ -98,6 +98,7 @@ class PatientView {
           break;
         case 5:
           console.log("Deslogando...");
+          waitUser();
           break;
         default:
           console.log("Opção inválida!");
