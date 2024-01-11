@@ -13,13 +13,13 @@ class PresentialAppointment extends Appointment {
     time: string,
   ) {
     super(id, patientId, doctorId, date, time);
-    this.schedule(undefined, room);
+    this.schedule(room);
   }
 
-  public schedule(platform?: string, room?: string): void {
-    super.schedule(undefined, undefined);
-    if (room === undefined) throw new Error("Sala inválida.");
-    this.room = room;
+  public schedule(platformRoom?: string): void {
+    super.schedule();
+    if (platformRoom === undefined) throw new Error("Sala inválida.");
+    this.room = platformRoom;
   }
 
   public get room(): string {

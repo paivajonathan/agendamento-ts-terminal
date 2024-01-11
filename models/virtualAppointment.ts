@@ -13,13 +13,13 @@ class VirtualAppointment extends Appointment {
     doctorId: number,
   ) {
     super(id, patientId, doctorId, date, time);
-    this.schedule(platform, undefined);
+    this.schedule(platform);
   }
 
-  public schedule(platform?: string, room?: string): void {
-    super.schedule(undefined, undefined);
-    if (platform === undefined) throw new Error("Plataforma inválida.");
-    this.platform = platform;
+  public schedule(platformRoom?: string): void {
+    super.schedule();
+    if (platformRoom === undefined) throw new Error("Plataforma inválida.");
+    this.platform = platformRoom;
   }
 
   public get platform(): string {

@@ -25,7 +25,7 @@ abstract class Appointment {
     this.status = "marcada";
   }
 
-  public schedule(platform?: string, room?: string): void {
+  public schedule(platformRoom?: string): void {
     const doctor = Doctor.getById(this.doctorId);
     const appointments = db.appointments.filter((appointment: Appointment) => appointment.doctorId === this.doctorId && appointment.date === this.date);
     const availableTimes = doctor.availableTimes.filter((time: string) => !appointments.some((appointment: Appointment) => appointment.time === time));
