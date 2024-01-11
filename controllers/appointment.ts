@@ -2,10 +2,6 @@ import db from "../database/database";
 import { Appointment, Doctor, Message, PresentialAppointment, VirtualAppointment } from "../models/models";
 
 class AppointmentController {
-  static getAll(): Appointment[] {
-    return db.appointments;
-  }
-
   static confirm(appointmentId: number, doctorId: number): Message {
     try {
       const appointment = Appointment.getById(appointmentId);
@@ -48,7 +44,7 @@ class AppointmentController {
   ): Message {
     try {
       const doctor = Doctor.getById(doctorId);
-      if (doctor.serviceType === "presential") {
+      if (doctor.serviceType === "presencial") {
         PresentialAppointment.create(doctor.platformRoom, date, time, patientId, doctorId);
       } else if (doctor.serviceType === "virtual") {
         VirtualAppointment.create(doctor.platformRoom, date, time, patientId, doctorId);

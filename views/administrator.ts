@@ -63,7 +63,7 @@ class AdministratorView {
       return;
     }
     console.log("Médicos cadastrados:");
-    console.table(doctors);
+    doctors.forEach((doctor: string) => console.log(doctor));
     waitUser();
   }
 
@@ -73,15 +73,15 @@ class AdministratorView {
     do {
       console.clear();
 
-      const name = readLine.question("Digite o nome da especialidade: ");
-      const type = readLine.question("Digite o tipo da especialidade: ");
+      const name = readLine.question("Digite o nome da especialidade\n> ");
+      const type = readLine.question("Digite o tipo da especialidade (clínica ou cirúrgica):\n> ");
 
       if (formatString(type) === "clinica") {
-        const area = readLine.question("Digite a área da especialidade: ");
+        const area = readLine.question("Digite a área da especialidade clínica:\n> ");
         registered = SpecialtyController.registerClinical(name, area);
 
       } else if (formatString(type) === "cirurgica") {
-        const surgeryType = readLine.question("Digite a especialidade cirúrgica: ");
+        const surgeryType = readLine.question("Digite o tipo de cirurgia:\n> ");
         registered = SpecialtyController.registerSurgical(name, surgeryType);
 
       } else {

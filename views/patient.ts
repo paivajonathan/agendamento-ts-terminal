@@ -5,36 +5,45 @@ import { continueTyping, waitUser } from "../utils";
 
 class PatientView {
   private static getDoctors(): void {
+    console.clear();
+
     const doctors = DoctorController.getAll();
     if (!doctors.length) {
       console.log("Nenhum médico cadastrado!");
       waitUser();
       return;
     }
+
     console.log("Médicos cadastrados:");
     doctors.forEach((doctor: string) => console.log(doctor));
     waitUser();
   }
 
   private static getAppointments(patientId: number): void {
+    console.clear();
+
     const appointments = AppointmentController.getByPatientId(patientId);
     if (!appointments.length) {
       console.log("Nenhuma consulta cadastrada!");
       waitUser();
       return;
     }
+
     console.log("Consultas cadastradas:");
     appointments.forEach((appointment: string) => console.log(appointment));
     waitUser();
   }
 
   private static getHistory(patientId: number): void {
+    console.clear()
+
     const history = HistoryController.getByPatientId(patientId);
     if (history.status !== 200) {
       console.log(history.message);
       waitUser();
       return;
     }
+
     console.log("Histórico:");
     console.log(history.data);
     waitUser();
@@ -44,9 +53,9 @@ class PatientView {
     do {
       console.clear();
 
-      const doctorId = Number(readLine.question("ID do médico: "));
-      const date = readLine.question("Data da consulta: ");
-      const time = readLine.question(`Horário da consulta: `);
+      const doctorId = Number(readLine.question("ID do médico:\n> "));
+      const date = readLine.question("Data da consulta:\n> ");
+      const time = readLine.question(`Horário da consulta:\n> `);
       const appointment = AppointmentController.create(date, patientId, doctorId, time);
 
       console.log(appointment.message);

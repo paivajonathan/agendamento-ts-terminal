@@ -3,13 +3,13 @@ import { Message, Patient } from "../models/models";
 
 class PatientController {
   static getAll(): string[] {
-    const patients = db.patients;
+    const patients = Patient.getAll();
     const toString = patients.map((patient: Patient) => patient.toString());
     return toString;
   }
 
   static getPatientByUserId(userId: number): Patient | undefined {
-    const patient = db.patients.find((patient: Patient) => patient.userId === userId);
+    const patient = Patient.getAll().find((patient: Patient) => patient.userId === userId);
     return patient;
   }
 

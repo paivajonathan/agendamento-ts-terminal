@@ -1,4 +1,5 @@
 import Person from "./person";
+import db from "../database/database";
 
 class Administrator extends Person {
   private _role: string = "";
@@ -25,6 +26,10 @@ class Administrator extends Person {
 
   public toString(): string {
     return `${super.toString()}, Cargo: ${this.role}`;
+  }
+
+  public static getAll(): Administrator[] {
+    return db.administrators;
   }
 }
 

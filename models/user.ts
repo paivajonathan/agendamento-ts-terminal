@@ -29,6 +29,14 @@ class User {
     if (isNaN(id) || id <= 0) throw new Error("ID inválido.");
     this._id = id;
   }
+
+  public toString(): string {
+    return `ID: ${this.id}, Email: ${this.email}`;
+  }
+
+  public static getAll(): User[] {
+    return db.users;
+  }
 }
 
 export default User;
