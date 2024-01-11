@@ -54,8 +54,8 @@ class PatientView {
       console.clear();
 
       const doctorId = Number(readLine.question("ID do médico:\n> "));
-      const date = readLine.question("Data da consulta:\n> ");
-      const time = readLine.question(`Horário da consulta:\n> `);
+      const date = readLine.question("Data da consulta (dd/mm/aaaa):\n> ");
+      const time = readLine.question(`Horário da consulta (hh:mm):\n> `);
       const appointment = AppointmentController.create(date, patientId, doctorId, time);
 
       console.log(appointment.message);
