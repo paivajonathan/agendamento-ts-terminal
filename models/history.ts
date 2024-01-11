@@ -88,7 +88,7 @@ class History {
   }
 
   public toString(): string {
-    return `Id: ${this.id}, Alergias: ${this.allergies.length ? this.allergies : "Nenhuma"}, Medicações em uso: ${this.medicationsInUse.length ? this.medicationsInUse : "Nenhuma"}, Comorbidades: ${this.comorbidities.length ? this.comorbidities : "Nenhuma"}`;
+    return `Id: ${this.id}, Alergias: ${this.allergies.length ? this.allergies.join(", ") : "Nenhuma"}, Medicações em uso: ${this.medicationsInUse.length ? this.medicationsInUse.join(", ") : "Nenhuma"}, Comorbidades: ${this.comorbidities.length ? this.comorbidities.join(", ") : "Nenhuma"}`;
   }
 
   public static getAll(): History[] {

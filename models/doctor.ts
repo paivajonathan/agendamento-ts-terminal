@@ -66,7 +66,7 @@ class Doctor extends Person {
   }
 
   public toString(): string {
-    return `${super.toString()}, Número de licença: ${this.licenceNumber}, Tipo de atendimento: ${this.serviceType}, Plataforma ou sala: ${this.platformRoom}, Horários disponíveis: ${this.availableTimes}`;
+    return `${super.toString()}, Número de licença: ${this.licenceNumber}, Tipo de atendimento: ${this.serviceType}, Plataforma ou sala: ${this.platformRoom}, Horários disponíveis: ${this.availableTimes.join(", ")}`;
   }
 
   public static getAll(): Doctor[] {
