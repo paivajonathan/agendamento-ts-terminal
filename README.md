@@ -9,16 +9,58 @@ administradores de uma clínica médica.
 ## Requisitos
 
 ### Funcionalidades:
-- Agendamento de Consultas: Permitir que pacientes marquem consultas.
-- Perfil de Médicos e Pacientes: Manter registros de médicos e pacientes.
-- Histórico Médico: Acesso ao histórico médico dos pacientes.
-- Gerenciamento de Horários: Organizar e visualizar a disponibilidade dos médicos.
+- **Agendamento de Consultas:** Permitir que pacientes marquem consultas.
+- **Perfil de Médicos e Pacientes:** Manter registros de médicos e pacientes.
+- **Histórico Médico:** Acesso ao histórico médico dos pacientes.
+- **Gerenciamento de Horários:** Organizar e visualizar a disponibilidade dos médicos.
 
 ### Conceitos de POO:
-- Encapsulamento: Classes para pacientes, médicos, consultas e históricos médicos.
-- Herança: Diferentes classes para especialidades médicas.
-- Polimorfismo: Métodos para agendamento conforme o tipo de consulta.
-- Exceções: Tratamento de conflitos de agendamento ou dados médicos incompletos.
+- **Encapsulamento:** Classes para pacientes, médicos, consultas e históricos médicos.
+- **Herança:** Diferentes classes para especialidades médicas.
+- **Polimorfismo:** Métodos para agendamento conforme o tipo de consulta.
+- **Exceções:** Tratamento de conflitos de agendamento ou dados médicos incompletos.
+
+## Perfis de Usuário Pré-Cadastrados
+
+### Administrador
+
+- **Login:** `admin@gmail.com`
+- **Senha:** `Admin@123`
+
+### Médico
+
+- **Login:** `medico@gmail.com`
+- **Senha:** `Medico@123`
+
+### Paciente
+
+- **Login:** `paciente@gmail.com`
+- **Senha:** `Paciente@123`
+
+## Operações Possíveis
+
+### Administrador
+
+- Visualizar médicos
+- Visualizar especialidades
+- Cadastrar médicos
+- Cadastrar especialidades
+
+### Médico
+
+- Visualizar consultas
+- Visualizar pacientes
+- Visualizar histórico médico de pacientes
+- Confirmar consultas
+- Cancelar consultas
+
+### Paciente
+
+- Cadastro próprio
+- Visualizar consultas
+- Visualizar médicos
+- Visualizar histórico médico
+- Agendar consultas
 
 ## Como rodar a aplicação
 
@@ -42,28 +84,11 @@ Execute a aplicação:
 npm start
 ```
 
-## Perfis de Usuário Pré-Cadastrados
-
-### Administrador
-
-- Login: admin@gmail.com
-- Senha: Admin@123
-
-### Médico
-
-- Login: medico@gmail.com
-- Senha: Medico@123
-
-### Paciente
-
-- Login: paciente@gmail.com
-- Senha: Paciente@123
-
-## Tecnologias
+## Tecnologias Utilizadas
 
 - [TypeScript](https://www.typescriptlang.org/)
 - [Node.js](https://nodejs.org/en/)
-- [Inquirer.js](https://www.npmjs.com/package/inquirer/v/0.2.3)
+- [Readline-Sync](https://www.npmjs.com/package/readline-sync)
 
 ## Autores
 
@@ -73,7 +98,3 @@ npm start
 ## Agradecimentos
 
 - [Prof. MSc. Antônio Sousa](https://github.com/antssousa/antssousa/)
-
-## Status do Projeto
-
-- [x] Concluído
