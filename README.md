@@ -1,5 +1,24 @@
 # Trabalho Final de Programação Orientada a Objetos
 
+## Sumário
+
+- [Descrição do Projeto](#descrição-do-projeto)
+- [Requisitos](#requisitos)
+  - [Funcionalidades](#funcionalidades)
+  - [Conceitos de POO](#conceitos-de-poo)
+- [Perfis de Usuário Pré-Cadastrados](#perfis-de-usuário-pré-cadastrados)
+  - [Administrador](#administrador)
+  - [Médico](#médico)
+  - [Paciente](#paciente)
+- [Operações Possíveis](#operações-possíveis)
+  - [Administrador](#administrador-1)
+  - [Médico](#médico-1)
+  - [Paciente](#paciente-1)
+- [Como rodar a aplicação](#como-rodar-a-aplicação)
+- [Tecnologias Utilizadas](#tecnologias-utilizadas)
+- [Autores](#autores)
+- [Agradecimentos](#agradecimentos)
+
 ## Descrição do Projeto
 
 O projeto consiste em um sistema de gerenciamento de consultas médicas,
