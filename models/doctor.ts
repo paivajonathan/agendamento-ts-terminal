@@ -61,7 +61,7 @@ class Doctor extends Person {
   public set availableTimes(availableTimes: string[]) {
     const regex = /^\d{2}:\d{2}$/;
     const invalidTimes = availableTimes.filter((time) => !regex.test(time));
-    if (invalidTimes.length > 0) throw new Error("Data inválida.");
+    if (invalidTimes.length > 0) throw new Error("Horário inválido.");
     this._availableTimes = availableTimes;
   }
 
