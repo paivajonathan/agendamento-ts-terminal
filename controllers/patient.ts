@@ -1,4 +1,3 @@
-import db from "../database/database";
 import { Message, Patient } from "../models/models";
 
 class PatientController {
@@ -8,7 +7,7 @@ class PatientController {
     return toString;
   }
 
-  static getPatientByUserId(userId: number): Patient | undefined {
+  static getByUserId(userId: number): Patient | undefined {
     const patient = Patient.getAll().find((patient: Patient) => patient.userId === userId);
     return patient;
   }

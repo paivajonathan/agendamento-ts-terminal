@@ -26,7 +26,8 @@ class Patient extends Person {
   public get address(): string { return this._address; }
 
   public set healthInsurance(healthInsurance: string) {
-    if (healthInsurance.length < 3 || healthInsurance.length > 100) throw new Error("Plano de saúde inválido.");
+    if (healthInsurance.length > 100) throw new Error("Plano de saúde inválido.");
+    if (healthInsurance.trim() === "") healthInsurance = "Nenhum";
     this._healthInsurance = healthInsurance;
   }
 

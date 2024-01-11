@@ -114,7 +114,7 @@ class AdministratorView {
     waitUser();
   }
 
-  public static showAdministratorsScreen(administrator: Administrator) {
+  public static showScreen(administrator: Administrator) {
     let option: number = 0;
 
     do {

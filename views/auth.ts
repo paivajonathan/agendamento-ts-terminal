@@ -29,21 +29,21 @@ class AuthView {
       return;
     }
 
-    const patient = PatientController.getPatientByUserId(user.id);
+    const patient = PatientController.getByUserId(user.id);
     if (patient) {
-      PatientView.showPatientsScreen(patient);
+      PatientView.showScreen(patient);
       return;
     }
 
     const doctor = DoctorController.getByUserId(user.id);
     if (doctor) {
-      DoctorView.showDoctorsScreen(doctor);
+      DoctorView.showScreen(doctor);
       return;
     }
 
     const admin = AdministratorController.getByUserId(user.id);
     if (admin) {
-      AdministratorView.showAdministratorsScreen(admin);
+      AdministratorView.showScreen(admin);
       return;
     }
   }
@@ -53,7 +53,7 @@ class AuthView {
       console.clear();
 
       const [email, password, name, birthDate, gender, cellphone] = getPersonData();
-      const healthInsurance = readLine.question("Digite seu plano de saúde:\n> ");
+      const healthInsurance = readLine.question("Digite seu plano de saúde (ou deixe em branco para nenhum):\n> ");
       const address = readLine.question("Digite seu endereço:\n> ");
 
       const allergies: string[] = [];

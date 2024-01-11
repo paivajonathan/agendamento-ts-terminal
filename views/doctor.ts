@@ -1,5 +1,5 @@
 import readLine from "readline-sync";
-import { AppointmentController, PatientController, HistoryController } from "../controllers/controllers";
+import { AppointmentController, HistoryController, PatientController } from "../controllers/controllers";
 import { Doctor } from "../models/models";
 import { waitUser } from "../utils";
 
@@ -70,13 +70,13 @@ class DoctorView {
     waitUser();
   }
 
-  public static showDoctorsScreen(doctor: Doctor) {
+  public static showScreen(doctor: Doctor) {
     let option: number = 0;
 
     do {
       console.clear();
       DoctorView.showMenu(doctor.name);
-      
+
       option = Number(readLine.question("Escolha uma opção: "));
 
       switch (option) {

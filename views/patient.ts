@@ -77,7 +77,7 @@ class PatientView {
     console.log("5 - Deslogar");
   }
 
-  public static showPatientsScreen(patient: Patient): void {
+  public static showScreen(patient: Patient): void {
     let option: number = 0;
 
     do {
