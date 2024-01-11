@@ -59,22 +59,22 @@ class AuthView {
       const allergies: string[] = [];
       while (true) {
         let allergy: string = readLine.question("Digite uma alergia (ou deixe em branco para sair):\n> ");
+        if (allergy.trim() === "") break;
         allergies.push(allergy);
-        if (!continueTyping("Deseja adicionar outra alergia? (s/n)\n> ")) break;
       }
 
       const medications: string[] = [];
       while (true) {
         let medication: string = readLine.question("Digite um medicamento (ou deixe em branco para sair):\n> ");
+        if (medication.trim() === "") break;
         medications.push(medication);
-        if (!continueTyping("Deseja adicionar outro medicamento? (s/n)\n> ")) break;
       }
 
       const comorbidities: string[] = [];
       while (true) {
         let comorbidity: string = readLine.question("Digite uma comorbidade (ou deixe em branco para sair):\n> ");
+        if (comorbidity.trim() === "") break;
         comorbidities.push(comorbidity);
-        if (!continueTyping("Deseja adicionar outra comorbidade? (s/n)\n> ")) break;
       }
 
       const registered = PatientController.register(
