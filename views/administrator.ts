@@ -74,22 +74,23 @@ class AdministratorView {
       console.clear();
 
       const name = readLine.question("Digite o nome da especialidade\n> ");
-      const type = readLine.question("Digite o tipo da especialidade (clínica ou cirúrgica):\n> ");
+      const type = Number(readLine.question("Digite o tipo da especialidade [clínica (1) ou cirúrgica (2)]:\n> "));
 
-      if (formatString(type) === "clinica") {
-        const area = readLine.question("Digite a área da especialidade clínica:\n> ");
-        registered = SpecialtyController.registerClinical(name, area);
+      switch (type) {
+        case 1:
+          const area = readLine.question("Digite a área da especialidade clínica:\n> ");
+          registered = SpecialtyController.registerClinical(name, area);
+          break;
+        case 2:
+          const surgeryType = readLine.question("Digite o tipo de cirurgia:\n> ");
+          registered = SpecialtyController.registerSurgical(name, surgeryType);
+          break;
+        default:
+          console.log("Tipo de especialidade inválido");
+          waitUser();
 
-      } else if (formatString(type) === "cirurgica") {
-        const surgeryType = readLine.question("Digite o tipo de cirurgia:\n> ");
-        registered = SpecialtyController.registerSurgical(name, surgeryType);
-
-      } else {
-        console.log("Tipo de especialidade inválido");
-        waitUser();
-
-        if (!continueTyping()) break;
-        continue;
+          if (!continueTyping()) return;
+          continue;
       }
 
       console.log(registered.message);
