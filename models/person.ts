@@ -43,6 +43,10 @@ class Person {
   public set birthDate(birthDate: string) {
     const regex = /^\d{2}([./-])\d{2}\1\d{4}$/;
     if (!regex.test(birthDate.toString())) throw new Error("Data de nascimento inválida.");
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const date = new Date(birthDate.split("/").reverse().join("-"));
+    if (date >= today) throw new Error("Data de nascimento inválida.");
     this._birthDate = birthDate;
   }
 
