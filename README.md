@@ -18,3 +18,10 @@ administradores de uma clínica médica.
 - Herança: Diferentes classes para especialidades médicas.
 - Polimorfismo: Métodos para agendamento conforme o tipo de consulta.
 - Exceções: Tratamento de conflitos de agendamento ou dados médicos incompletos.
+
+## Como rodar a aplicação
+
+>>> No terminal, clone o projeto:
+```bash
+git clone https://github.com/paivajonathan/agendamento-ts-terminal.git
+```
